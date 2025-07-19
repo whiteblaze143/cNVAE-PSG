@@ -1,0 +1,531 @@
+,﻿ID,confidential ID given to each patient
+1,sex,male/female
+2,gender,gender
+3,BMI,body mass index
+4,height,height (inches)
+5,weight,weight (pounds)
+6,collar,collar size (inches)
+7,age,"age at time of study (grouped in 5 year intervals, e.g., 30-34)"
+8,lout,lights out time (percent of a day)
+9,lon,lights on time (percent of a day)
+10,trt,total recording time (minutes)
+11,tsp,total sleep period (minutes)
+12,tst,total sleep time (minutes)
+13,se,sleep efficiency (percent)
+14,nawak,number of awakenings (whole number)
+15,waso,wake time after sleep onset (minutes)
+16,sol,sleep onset latency (minutes)
+17,remlat,REM latency (minutes)
+18,durw,duration of wake (minutes)
+19,dur1,duration of stage 1 (minutes)
+20,dur2,duration of stage 2 (minutes)
+21,dur3,duration of stage 3 (minutes)
+22,durREM,duration of REM (minutes)
+23,N1,percent of sleep time in stage 1 (percent)
+24,N2,percent of sleep time in stage 2 (percent)
+25,N3,percent of sleep time in stage 3 (percent)
+26,REM,percent of sleep time in stage REM (percent)
+27,,
+28,rmova,number REM movement arousals (whole number)
+29,rlma,number REM limb movement arousals (whole number)
+30,rresa,number REM respiratory arousals (whole number)
+31,rtrna,number REM transient arousals (whole number)
+32,rtota,number REM total number of arousals (whole number)
+33,nrmova,number non REM movement arousals (whole number)
+34,nrlma,number non REM limb movement arousals (whole number)
+35,nrresa,number non REM respiratory arousals (whole number)
+36,nrtrna,number non REM transient arousals (whole number)
+37,nrtota,number non REM total number of arousals (whole number)
+38,smova,number movement arousals in sleep (whole number)
+39,slma,number limb movement arousals in sleep (whole number)
+40,sresa,number respiratory arousals in sleep (whole number)
+41,strna,number transient arousals in sleep (whole number)
+42,tota,number total number of arousals in sleep (whole number)
+43,rmovai,index number REM movement arousals (whole number)
+44,rlmai,index number REM limb movement arousals (whole number)
+45,rresai,index number REM respiratory arousals (whole number)
+46,rtrnai,index number REM transient arousals (whole number)
+47,rtotai,index number REM total number of arousals (whole number)
+48,nrmvai,index number non REM movement arousals (whole number)
+49,nrlmai,index number non REM limb movement arousals (whole number)
+50,nrrpai,index number non REM respiratory arousals (whole number)
+51,nrtrai,index number non REM transient arousals (whole number)
+52,nrtoai,index number non REM total number of arousals (whole number)
+53,smovai,index number movement arousals in Sleep (whole number)
+54,slmai,index number limb movement arousals in Sleep (whole number)
+55,sresai,index number respiratory arousals in Sleep(whole number)
+56,strnai,index number transient arousals in Sleep (whole number)
+57,stotai,index number total number of arousals Sleep (whole number)
+58,nrsup,percent of time in NREM supine (percent)
+59,nrpro,percent of time in NREM prone (percent)
+60,nrleft,percent of time in NREM left (percent)
+61,nrrigh,percent of time in NREM right (percent)
+62,nrnsup,percent of time in NREM non-supine (percent)
+63,rsup,percent of time in REM supine (percent)
+64,rpro,percent of time in REM prone (percent)
+65,rleft,percent of time in REM left (percent)
+66,rrigh,percent of time in REM right (percent)
+67,rnsup,percent of time in REM non-supine (percent)
+68,ssup,percent of sleep time in supine (percent)
+69,spro,percent of sleep time in prone (percent)
+70,sleft,percent of sleep time in left (percent)
+71,srigh,percent of sleep time in right (percent)
+72,snsup,percent of sleep time in non-supine (percent)
+73,tsup,amount of sleep time in supine (minutes)
+74,tpro,amount of sleep time in prone (minutes)
+75,tleft,amount of sleep time in left (minutes)
+76,trigh,amount of sleep time in right (minutes)
+77,tnsup,amount of sleep time in non-supine (minutes)
+78,obsnum,number of obstructive events (whole number)
+79,obshr,number of obstructive events per hour (whole number)
+80,obsavg,average duration of obstructive events (minutes)
+81,obsrem,number of obstructive events in REM (whole number)
+82,obsnrm,number of obstructive events in NREM (whole number)
+83,mxnum,number of mixed events (whole number)
+84,mxhr,number of mixed events per hour (whole number)
+85,mxavg,average duration of mixed events (minutes)
+86,mxrem,number of mixed events in REM (whole number)
+87,mxnrm,number of mixed events in NREM (whole number)
+88,cennum,number of central events (whole number)
+89,cenhr,number of central events per hour (whole number)
+90,cenavg,average duration of central events (minutes)
+91,cenrem,number of central events in REM (whole number)
+92,cennrm,number of central events in NREM (whole number)
+93,apnum,total number of apneas (whole number)
+94,aphr,total number of apneas per hour (whole number)
+95,apavg,average duration of all apneas (minutes)
+96,aplg,longest duration of all apneas (minutes)
+97,aprem,total number of apneas in REM (whole number)
+98,apnrm,total number of apneas in NREM (whole number)
+99,h1num,number of hypopnea 1s (whole number)
+100,h1hr,number of hypopnea 1s per hour (whole number)
+101,h1avg,average duration of hypopnea 1s (minutes)
+102,h1lg,longest duration of hypopnea 1 (minutes)
+103,h1rem,number of hypopnea 1s in REM (whole number)
+104,h1nrem,number of hypopnea 1s in NREM (whole number)
+105,h2num,number of hypopnea 2s (whole number)
+106,h2hr,number of hypopnea 2s per hour (whole number)
+107,h2avg,average duration of hypopnea 2s (minutes)
+108,h2lg,longest duration of hypopnea 2 (minutes)
+109,h2rem,number of hypopnea 2s in REM (whole number)
+110,h2nrem,number of hypopnea 2s in NREM (whole number)
+111,remap,number of apneas in REM (whole number)
+112,remh1,number of hypopnea 1s in REM (whole number)
+113,remah1,number of apneas and hypopnea 1s in REM (whole number)
+114,remh2,number of hypopnea 2s in REM (whole number)
+115,remrai,respiratory arousal index in REM (whole number)
+116,remahi,apnea/hypopnea1 index (AHI) in REM (whole number)
+117,remrdi,respiratory disturbance index (RDI) in REM (whole number)
+118,nrmap,number of apneas in NREM (whole number)
+119,nrmh1,number of hypopnea 1s in NREM (whole number)
+120,nrmah1,number of apneas and hypopnea 1s in NREM (whole number)
+121,nrmh2,number of hypopnea 2s in NREM (whole number)
+122,nrmrai,respiratory arousal index in NREM (whole number)
+123,nrmahi,apnea/hypopnea1 index (AHI) in NREM (whole number)
+124,nrmrdi,respiratory disturbance index (RDI) in NREM (whole number)
+125,slpap,total number of apneas in Sleep (whole number)
+126,slph1,total number of hypopnea 1s in Sleep (whole number)
+127,slpah1,total number of apneas and hypopnea 1s in Sleep (whole number)
+128,slph2,total number of hypopnea 2s in Sleep (whole number)
+129,slprai,respiratory arousal index in Sleep (whole number)
+130,slpahi,apnea/hypopnea1 index (AHI) in Sleep (whole number)
+131,slprdi,respiratory disturbance index (RDI) in Sleep (whole number)
+132,lftobs,number of obstructive resp events per hour of sleep on left side (whole number)
+133,lftnx,number of mixed resp events per hour of sleep on  left side (whole number)
+134,lftcen,number of central resp events per hour of sleep on left side (whole number)
+135,lfth1,number of hypopnea 1 resp events per hour of sleep on left side (whole number)
+136,lftahi,apnea/hypopnea1 index (AHI) on left side (whole number)
+137,lfth2,number of hypopnea 2 resp events per hour of sleep on left side (whole number)
+138,rtobs,number of obstructive resp events per hour of sleep on right side (whole number)
+139,rtnx,number of mixed resp events per hour of sleep on right side (whole number)
+140,rtcen,number of central resp events per hour of sleep on right side (whole number)
+141,rth1,number of hypopnea 1 resp events per hour of sleep on right side (whole number)
+142,rtahi,apnea/hypopnea1 index (AHI) on right side (whole number)
+143,rth2,number of hypopnea 2 resp events per hour of sleep on right side (whole number)
+144,proobs,number of obstructive resp events per hour of sleep when prone (whole number)
+145,pronx,number of mixed resp events per hour of sleep when prone (whole number)
+146,procen,number of central resp events per hour of sleep when prone (whole number)
+147,proh1,number of hypopnea 1 resp events per hour of sleep when prone (whole number)
+148,proahi,apnea/hypopnea1 index (AHI) when prone (whole number)
+149,proh2,number of hypopnea 2 resp events per hour of sleep when prone (whole number)
+150,supobs,number of obstructive resp events per hour of sleep when supine (whole number)
+151,supnx,number of mixed resp events per hour of sleep when supine (whole number)
+152,supcen,number of central resp events per hour of sleep when supine (whole  number)
+153,suph1,number of hypopnea 1 resp events per hour of sleep when supine (whole number)
+154,supahi,apnea/hypopnea1 index (AHI) when supine (whole number)
+155,suph2,number of hypopnea 2 resp events per hour of sleep when supine (whole number)
+156,o2wake,average waking SaO2 (percent)
+157,o2slp,average sleeping SaO2 (percent)
+158,o2low,lowest SaO2 (percent)
+159,o2d90,duration of sleep with SaO2 below 90% (minutes)
+160,o2d85,duration of sleep with SaO2 below 85% (minutes)
+161,o2d80,duration of sleep with SaO2 below 80% (minutes)
+162,o2d75,duration of sleep with SaO2 below 75% (minutes)
+163,o2p90,percent of total sleep time with SaO2 below 90% (minutes)
+164,o2p85,percent of total sleep time with SaO2 below 85% (minutes)
+165,o2p80,percent of total sleep time with SaO2 below 80% (minutes)
+166,o2p75,percent of total sleep time with SaO2 below 75% (minutes)
+167,o2lrs,lowest SaO2 percent in REM-supine (percent)
+168,o2lrns,lowest SaO2 percent in REM-non-supine (percent)
+169,o2lnrs,lowest SaO2 percent in NREM-supine (percent)
+170,o2lnrn,lowest SaO2 percent in Sleep (percent)
+171,o2lst,average minimum SaO2 percent in REM-supine (percent)
+172,o2mrs,average minimum SaO2 percent in REM-non-supine (percent)
+173,o2mrns,average minimum SaO2 percent in NREM-supine (percent)
+174,o2mnrs,average minimum SaO2 percent in NREM-supine (percent)
+175,o2mnrn,average minimum SaO2 percent in Sleep (percent)
+176,o2mst,average minimum SaO2 percent in REM-supine (percent)
+177,t30nrem,time TcCO2 above 30mmHg in NREM (minutes)
+178,t30rem,time TcCO2 above 30mmHg in REM (minutes)
+179,t30tst,time TcCO2 above 30mmHg in total sleep (minutes)
+180,t30awak,time TcCO2 above 30mmHg while awake (minutes)
+181,t40nrem,time TcCO2 above 40mmHg in NREM (minutes)
+182,t40rem,time TcCO2 above 40mmHg in REM (minutes)
+183,t40tst,time TcCO2 above 40mmHg in total sleep (minutes)
+184,t40awak,time TcCO2 above 40mmHg while awake (minutes)
+185,t50nrem,time TcCO2 above 50mmHg in NREM (minutes)
+186,t50rem,time TcCO2 above 50mmHg in REM (minutes)
+187,t50tst,time TcCO2 above 50mmHg in total sleep (minutes)
+188,t50awak,time TcCO2 above 50mmHg while awake (minutes)
+189,t60nrem,time TcCO2 above 60mmHg in NREM (minutes)
+190,t60rem,time TcCO2 above 60 mmHg in REM (minutes)
+191,t60tst,time TcCO2 above 60mmHg in total sleep (minutes)
+192,t60awak,time TcCO2 above 60mmHg while awake (minutes)
+193,htnrem,highest TcCO2 in NREM (mmHg)
+194,htrem,highest TcCO2 in REM (mmHg)
+195,httst,highest TcCO2 in total sleep (mmHg)
+196,httrt,highest TcCO2 in TRT (mmHg)
+197,ltnrem,lowest TcCO2 in NREM (mmHg)
+198,ltrem,lowest TcCO2 in REM (mmHg)
+199,lttst,lowest TcCO2 in total sleep (mmHg)
+200,lttrt,lowest TcCO2 in TRT (mmHg)
+201,atnrem,average TcCO2 in NREM (mmHg)
+202,atrem,average TcCO2 in REM (mmHg)
+203,attst,average TcCO2 in total sleep (mmHg)
+204,attrt,average TcCO2 in TRT (mmHg)
+205,hrslp,"average sleeping heart rate (BPM, whole number)"
+206,hrrem,"average heart rate in REM (BPM, whole number)"
+207,hrnrem,"average heart rate in NREM (BPM, whole number)"
+208,hrmax,"maximum heart rate in sleep (BPM, whole number)"
+209,hrmin,"minimum heart rate in sleep (BPM, whole number)"
+210,hrmaxrec,"maximum heart rate recorded (BPM, whole number)"
+211,plmenr,number of PLM episodes in NREM
+212,plmerm,number of PLM episodes in REM
+213,plmesl,number of PLM episodes in sleep
+214,plehnr,number of PLM episodes per hour in NREM
+215,plehrm,number of PLM episodes per hour in REM
+216,plehsl,number of PLM episodes per hour in sleep
+217,plmnnr,number of individual PLMs in NREM
+218,plmnrm,number of individual PLMs in REM
+219,plmnsl,number of individual PLMs in sleep
+220,plnhnr,number of individual PLMs per hour in NREM
+221,plnhrm,number of individual PLMs per hour in REM
+222,plnhsl,number of individual PLMs per hour in sleep
+223,plmlnr,number of left PLMs in NREM
+224,plmlrm,number of left PLMs in REM
+225,plmlsl,number of left PLMs in total sleep
+226,plmrnr,number of right PLMs in NREM
+227,plmrrm,number of right PLMs in REM
+228,plmrsl,number of right PLMs in total sleep
+229,plmlhnr,number of left PLMs per hour in NREM
+230,plmlhrm,number of left PLMs per hour in REM
+231,plmlhsl,number of left PLMs per hour in total sleep
+232,plmrhnr,number of right PLMs per hour in NREM
+233,plmrhrm,number of right PLMs per hour in REM
+234,plmrhsl,number of right PLMs per hour in total sleep
+235,ParticipantKey,participant key
+236,AgeGroup,"age at time of study (grouped in 5 year intervals, e.g., 30-34)"
+237,heartdisease,heart attack or angina
+238,HAtreat,treatment for heart disease
+239,HAstent,stenting for heart disease
+240,HAact,does heart disease limit activities?
+241,CHF,congestive heart failure
+242,CHFtreat,treatment for congestive heart failure
+243,CHFact,does congestive heart failure limit activities?
+244,LungDisease,"asthma, COPD, emphysema, bronchitis, or cystic fibrosis"
+245,LDtreat,treatment for lung disease
+246,LDact,does lung disease limit activities?
+247,HighBP,high blood pressure
+248,Diabetes,diabetes
+249,GERD,gastroesophageal reflux disease or gastric/stomach  ulcer
+250,KidneyDisease,kidney disease
+251,Anemia,low blood count
+252,OA,"osteoarthritis, degenerative arthritis"
+253,RA,rheumatoid arthritis
+254,BackPain,back pain
+255,ChronicPain,not back pain
+256,Neuropathy_NerveDisease,neuropathy/nerve disease
+257,SCdis,spinal cord disease
+258,Fibromyalgia,fibromyalgia
+259,Stroke,stroke
+260,parkinsons,parkinson’s disease
+261,migraines,migraines
+262,Seiz,seizures/epilepsy
+263,Insomnia,insomnia
+264,Sleep_Apnea,sleep apnea
+265,RLS,restless leg syndrome
+266,Narc,narcolepsy
+267,PriorHIV,prior HIV-positive test
+268,OtherProb,other medical problems
+269,FHsa,family history of sleep apnea
+270,FHinsom,family history of insomnia
+271,FHnarco,family history of narcolepsy
+272,FHrls,family history of restless leg syndrome
+273,FHseiz,family history of seizures/epilepsy
+274,FHslpwlk,family history of sleepwalking/unusual sleep behavior
+275,BSex,female/male
+276,BSexOther,other biological sex
+277,Gender,gender
+278,GenderOther,other biological sex
+279,Ethnicity,ethnicity
+280,EthnicityOther,other ethnicity
+281,education,highest degree/level of education completed
+282,EducOther,other education
+283,Income,annual household income
+284,smoking,smoke cigarettes
+285,PastSmok,smoked previously?
+286,StopSmok,how long ago did you stop smoking?
+287,Cannab,cannabis use
+288,alc,alcohol use
+289,alcQuant,number of alcoholic drinks in a typical day
+290,Alc6+,how often having six or more drinks on one occasion?
+291,caff,average number of caffeinated beverages per day
+292,Exer,exercise
+293,diet,healthy diet
+294,shftwork,shift worker
+295,napquant,number of days a week to take a nap
+296,naplgth,average length of nap
+297,bedshare,shared bed
+298,slepdrp,sleep disruption
+299,bedwet,bed wetting
+300,sleepbld,"bitten tongue, unexplained blood on pillow"
+301,SNSA,swiss narcolepsy scale Q1
+302,SNSB,swiss narcolepsy scale Q2
+303,SNSC,swiss narcolepsy scale Q3
+304,SNSD,swiss narcolepsy scale Q4
+305,SNSE,swiss narcolepsy scale Q5
+306,SNS,swiss narcolepsy scale total
+307,SNS2,swiss narcolepsy scale total
+308,FatigueScale_eve,present state of physical energy/fatigue
+309,SFSC_eve,present state of sleepiness
+310,SBsnore,STOP-Bang snore loudly
+311,SBtired,STOP-Bang tired
+312,SBObs,STOP-Bang observed
+313,SBbp,STOP-Bang high blood pressure
+314,SBneck,STOP-Bang neck size
+315,hpref,preferred metric system for height
+316,heightCM,height (cm)
+317,heightFT,height (ft)
+318,heightIN,height (in)
+319,wpref,preferred metric system for weight
+320,weightKG,weight (kg)
+321,weightLB,weight (lb)
+322,CalcBMI,patient BMI (kg/m2)
+323,BMI_Binary,binary BMI
+324,Age>50,binary value for age > 50
+325,STOPBANGSCORE,STOP-Bang score
+326,STOPBANG_CLAUSES_,Binary meets binary clause for high risk
+327,PITT1,Pittsburgh sleep quality index Q1
+328,PITT2,Pittsburgh sleep quality index Q2
+329,PITT3,Pittsburgh sleep quality index Q3
+330,PITT4a,Pittsburgh sleep quality index Q4a
+331,PITT4b,Pittsburgh sleep quality index Q4b
+332,PITT5a,Pittsburgh sleep quality index Q5a
+333,PITT5b,Pittsburgh sleep quality index Q5b
+334,PITT5c,Pittsburgh sleep quality index Q5c
+335,PITT5d,Pittsburgh sleep quality index Q5d
+336,PITT5e,Pittsburgh sleep quality index Q5e
+337,PITT5f,Pittsburgh sleep quality index Q5f
+338,PITT5g,Pittsburgh sleep quality index Q5g
+339,PITT5h,Pittsburgh sleep quality index Q5h
+340,PITT5i,Pittsburgh sleep quality index Q5i
+341,PITT5jresponse,"Pittsburgh sleep quality index Q5j (other reasons, text)"
+342,PITT5j,Pittsburgh sleep quality index Q5j
+343,PITT6,Pittsburgh sleep quality index Q6
+344,PITT7,Pittsburgh sleep quality index Q7
+345,PITT8,Pittsburgh sleep quality index Q8
+346,PITT9,Pittsburgh sleep quality index Q9
+347,PITT10,Pittsburgh sleep quality index Q10
+348,PITT10a,Pittsburgh sleep quality index Q10a
+349,PITT10b,Pittsburgh sleep quality index Q10b
+350,PITT10c,Pittsburgh sleep quality index Q10c
+351,PITT10d,Pittsburgh sleep quality index Q10d
+352,PITT10e,Pittsburgh sleep quality index Q10e
+353,PITT10eresponse,"Pittsburgh sleep quality index Q10e (other restlessness, text)"
+354,comp2,component 2
+355,comp3,component 3
+356,comp4,component 4
+357,comp5,component 5
+358,comp7,component 7
+359,PSQIScore,PSQI global score
+360,EPSsit,Epworth Sleepiness Scale (sitting and reading)
+361,EPStele,Epworth Sleepiness Scale (watching television)
+362,EPSinactive,Epworth Sleepiness Scale (sitting inactive in public place)
+363,EPScar,Epworth Sleepiness Scale (passenger in a car)
+364,EPSlay,Epworth Sleepiness Scale (lying down to rest)
+365,EPStalk,Epworth Sleepiness Scale (sitting and talking)
+366,EPSlunch,Epworth Sleepiness Scale (sitting after lunch without alcohol)
+367,EPStraffic,Epworth Sleepiness Scale (in a car stuck in traffic)
+368,EpScore,"Epworth Sleepiness Scale, Lower Normal Daytime"
+369,EpScoreddupe,"Epworth Sleepiness Scale, Higher Normal Daytime"
+370,EpScoreddupe1,"Epworth Sleepiness Scale, Mild Excessive Daytime Sleepiness"
+371,EpScoreddupe2,"Epworth Sleepiness Scale, Moderate Excessive Daytime Sleepiness"
+372,EpScoreddupe3,"Epworth Sleepiness Scale, Severe Excessive Daytime Sleepiness"
+373,ISI1,Insomnia Severity Index Q1
+374,ISI2,Insomnia Severity Index Q2
+375,ISI3,Insomnia Severity Index Q3
+376,ISI4,Insomnia Severity Index Q4
+377,ISI5,Insomnia Severity Index Q5
+378,ISI6,Insomnia Severity Index Q6
+379,ISI7,Insomnia Severity Index Q7
+380,ISI_Score,Insomnia Severity Index score
+381,ISIInterpret,Insomnia Severity Index interpretation
+382,PreIRLS1a,
+383,PreIRLS1b,
+384,PreIRLS2,
+385,PreIRLS3,
+386,PreIRLS4,
+387,PreIRLS5a,
+388,PreIRLS5b,
+389,IRLS1,International Restless Leg Syndrome Q1
+390,IRLS2,International Restless Leg Syndrome Q2
+391,IRLS3,International Restless Leg Syndrome Q3
+392,IRLS4,International Restless Leg Syndrome Q4
+393,IRLS5,International Restless Leg Syndrome Q5
+394,IRLS6,International Restless Leg Syndrome Q6
+395,IRLS7,International Restless Leg Syndrome Q7
+396,IRLS8,International Restless Leg Syndrome Q8
+397,IRLS9,International Restless Leg Syndrome Q9
+398,IRLS10,International Restless Leg Syndrome Q10
+399,IRLS_Score,International Restless Leg Syndrome score
+400,IRLSInterpret406,International Restless Leg Syndrome score interpretation
+401,HO1,Horne Ostberg (Morning-eveningness) Q1
+402,HO2,Horne Ostberg (Morning-eveningness) Q2
+403,HO3,Horne Ostberg (Morning-eveningness) Q3
+404,HO4,Horne Ostberg (Morning-eveningness) Q4
+405,HO5,Horne Ostberg (Morning-eveningness) Q5
+406,HO6,Horne Ostberg (Morning-eveningness) Q6
+407,HO7,Horne Ostberg (Morning-eveningness) Q7
+408,HO8,Horne Ostberg (Morning-eveningness) Q8
+409,HO9,Horne Ostberg (Morning-eveningness) Q9
+410,HO10,Horne Ostberg (Morning-eveningness) Q10
+411,HO11,Horne Ostberg (Morning-eveningness) Q11
+412,HO12,Horne Ostberg (Morning-eveningness) Q12
+413,HO13,Horne Ostberg (Morning-eveningness) Q13
+414,HO14,Horne Ostberg (Morning-eveningness) Q14
+415,HO15,Horne Ostberg (Morning-eveningness) Q15
+416,HO16,Horne Ostberg (Morning-eveningness) Q16
+417,HO17,Horne Ostberg (Morning-eveningness) Q17
+418,HO18,Horne Ostberg (Morning-eveningness) Q18
+419,HO19,Horne Ostberg (Morning-eveningness) Q19
+420,HO_Score,Horne Ostberg (Morning-eveningness) score
+421,HOInterpretation,Horne Ostberg (Morning-eveningness) score interpretation
+422,mvmtslp,"movements during sleep, nightmares, sleep-related eating, sleep paralysis"
+423,MPSQ1,Munich Parasomnia Screening Questionnaire Q1
+424,MPSQ1no,"Munich Parasomnia Screening Questionnaire Q1, not anymore"
+425,MPSQ1h,"Munich Parasomnia Screening Questionnaire Q1, currently observed"
+426,MPSQ1h2,"Munich Parasomnia Screening Questionnaire Q1, by self or others"
+427,MPSQ2,Munich Parasomnia Screening Questionnaire Q2
+428,MPSQ2no,"Munich Parasomnia Screening Questionnaire Q2, not anymore"
+429,MPSQ2h,"Munich Parasomnia Screening Questionnaire Q2, currently observed"
+430,MPSQ2h2,"Munich Parasomnia Screening Questionnaire Q2, by self or others"
+431,MPSQ3,Munich Parasomnia Screening Questionnaire Q3
+432,MPSQ3no,"Munich Parasomnia Screening Questionnaire Q3, not anymore"
+433,MPSQ3h,"Munich Parasomnia Screening Questionnaire Q3, currently observed"
+434,MPSQ3h2,"Munich Parasomnia Screening Questionnaire Q3, by self or others"
+435,MPSQ4,Munich Parasomnia Screening Questionnaire Q4
+436,MPSQ4no,"Munich Parasomnia Screening Questionnaire Q4, not anymore"
+437,MPSQ4h,"Munich Parasomnia Screening Questionnaire Q4, currently observed"
+438,MPSQ4h2,"Munich Parasomnia Screening Questionnaire Q4, by self or others"
+439,MPSQ5,Munich Parasomnia Screening Questionnaire Q5
+440,MPSQ5no,"Munich Parasomnia Screening Questionnaire Q5, not anymore"
+441,MPSQ5h,"Munich Parasomnia Screening Questionnaire Q5, currently observed"
+442,MPSQ5h2,"Munich Parasomnia Screening Questionnaire Q5, by self or others"
+443,MPSQ6,Munich Parasomnia Screening Questionnaire Q6
+444,MPSQ6no,"Munich Parasomnia Screening Questionnaire Q6, not anymore"
+445,MPSQ6h,"Munich Parasomnia Screening Questionnaire Q6, currently observed"
+446,MPSQ6h2,"Munich Parasomnia Screening Questionnaire Q6, by self or others"
+447,MPSQ7,Munich Parasomnia Screening Questionnaire Q7
+448,MPSQ7no,"Munich Parasomnia Screening Questionnaire Q7, not anymore"
+449,MPSQ7h,"Munich Parasomnia Screening Questionnaire Q7, currently observed"
+450,MPSQ7h2,"Munich Parasomnia Screening Questionnaire Q7, by self or others"
+451,MPSQ8,Munich Parasomnia Screening Questionnaire Q8
+452,MPSQ8no,"Munich Parasomnia Screening Questionnaire Q8, not anymore"
+453,MPSQ8h,"Munich Parasomnia Screening Questionnaire Q8, currently observed"
+454,MPSQ8h2,"Munich Parasomnia Screening Questionnaire Q8, by self or others"
+455,MPSQ9,Munich Parasomnia Screening Questionnaire Q9
+456,MPSQ9no,"Munich Parasomnia Screening Questionnaire Q9, not anymore"
+457,MPSQ9h,"Munich Parasomnia Screening Questionnaire Q9, currently observed"
+458,MPSQ9h2,"Munich Parasomnia Screening Questionnaire Q9, by self or others"
+459,MPSQ10,Munich Parasomnia Screening Questionnaire Q10
+460,MPSQ10no,"Munich Parasomnia Screening Questionnaire Q10, not anymore"
+461,MPSQ10h,"Munich Parasomnia Screening Questionnaire Q10, currently observed"
+462,MPSQ10h2,"Munich Parasomnia Screening Questionnaire Q10, by self or others"
+463,MPSQ11,Munich Parasomnia Screening Questionnaire Q11
+464,MPSQ11no,"Munich Parasomnia Screening Questionnaire Q11, not anymore"
+465,MPSQ11h,"Munich Parasomnia Screening Questionnaire Q11, currently observed"
+466,MPSQ11h2,"Munich Parasomnia Screening Questionnaire Q11, by self or others"
+467,MPSQ12,Munich Parasomnia Screening Questionnaire Q12
+468,MPSQ12no,"Munich Parasomnia Screening Questionnaire Q12, not anymore"
+469,MPSQ12h,"Munich Parasomnia Screening Questionnaire Q12, currently observed"
+470,MPSQ12h2,"Munich Parasomnia Screening Questionnaire Q12, by self or others"
+471,MPSQ13,Munich Parasomnia Screening Questionnaire Q13
+472,MPSQ13no,"Munich Parasomnia Screening Questionnaire Q13, not anymore"
+473,MPSQ13h,"Munich Parasomnia Screening Questionnaire Q13, currently observed"
+474,MPSQ13h2,"Munich Parasomnia Screening Questionnaire Q13, by self or others"
+475,MPSQ14,Munich Parasomnia Screening Questionnaire Q14
+476,MPSQ14no,"Munich Parasomnia Screening Questionnaire Q14, not anymore"
+477,MPSQ14h,"Munich Parasomnia Screening Questionnaire Q14, currently observed"
+478,MPSQ14h2,"Munich Parasomnia Screening Questionnaire Q14, by self or others"
+479,MPSQ15,Munich Parasomnia Screening Questionnaire Q15
+480,MPSQ15no,"Munich Parasomnia Screening Questionnaire Q15, not anymore"
+481,MPSQ15h,"Munich Parasomnia Screening Questionnaire Q15, currently observed"
+482,MPSQ15h2,"Munich Parasomnia Screening Questionnaire Q15, by self or others"
+483,MPSQ16,Munich Parasomnia Screening Questionnaire Q16
+484,MPSQ16no,"Munich Parasomnia Screening Questionnaire Q16, not anymore"
+485,MPSQ16h,"Munich Parasomnia Screening Questionnaire Q16, currently observed"
+486,MPSQ16h2,"Munich Parasomnia Screening Questionnaire Q16, by self or others"
+487,MPSQ17,Munich Parasomnia Screening Questionnaire Q17
+488,MPSQ17no,"Munich Parasomnia Screening Questionnaire Q17, not anymore"
+489,MPSQ17h,"Munich Parasomnia Screening Questionnaire Q17, currently observed"
+490,MPSQ17h2,"Munich Parasomnia Screening Questionnaire Q17, by self or others"
+491,MPSQ18,Munich Parasomnia Screening Questionnaire Q18
+492,MPSQ18no,"Munich Parasomnia Screening Questionnaire Q18, not anymore"
+493,MPSQ18h,"Munich Parasomnia Screening Questionnaire Q18, currently observed"
+494,MPSQ18h2,"Munich Parasomnia Screening Questionnaire Q18, by self or others"
+495,MPSQ19,Munich Parasomnia Screening Questionnaire Q19
+496,MPSQ19no,"Munich Parasomnia Screening Questionnaire Q19, not anymore"
+497,MPSQ19h,"Munich Parasomnia Screening Questionnaire Q19, currently observed"
+498,MPSQ19h2,"Munich Parasomnia Screening Questionnaire Q19, by self or others"
+499,MPSQ20,Munich Parasomnia Screening Questionnaire Q20
+500,MPSQ20no,"Munich Parasomnia Screening Questionnaire Q20, not anymore"
+501,MPSQ20h,"Munich Parasomnia Screening Questionnaire Q20, currently observed"
+502,MPSQ20h2,"Munich Parasomnia Screening Questionnaire Q20, by self or others"
+503,MPSQ21,Munich Parasomnia Screening Questionnaire Q21
+504,MPSQ21no,"Munich Parasomnia Screening Questionnaire Q21, not anymore"
+505,MPSQ21h,"Munich Parasomnia Screening Questionnaire Q21, currently observed"
+506,MPSQ21h2,"Munich Parasomnia Screening Questionnaire Q21, by self or others"
+507,MPSQ22,Munich Parasomnia Screening Questionnaire Q22
+508,MPSQ22no,"Munich Parasomnia Screening Questionnaire Q22, not anymore"
+509,MPSQ22h,"Munich Parasomnia Screening Questionnaire Q22, currently observed"
+510,MPSQ22h2,"Munich Parasomnia Screening Questionnaire Q22, by self or others"
+511,ParticipantKey,participant key (morning)
+512,MQ1,Morning Questionnaire Q1
+513,MQ2,Morning Questionnaire Q2
+514,MQ3,Morning Questionnaire Q3
+515,MQ4,Morning Questionnaire Q4
+516,MQ5,Morning Questionnaire Q5
+517,MQ6,Morning Questionnaire Q6
+518,MQ7,Morning Questionnaire Q7
+519,MQ8,Morning Questionnaire Q8
+520,MQ9,Morning Questionnaire Q9
+521,MQ10,Morning Questionnaire Q10
+522,MQ11,Morning Questionnaire Q11
+523,MQ12,Morning Questionnaire Q12
+524,MQ13,Morning Questionnaire Q13
+525,MQ14,Morning Questionnaire Q14
+526,MQ15,Morning Questionnaire Q15
+527,FatigueScale_morn,Morning sleep/fatigue questionnaire
+528,SFSC_morn,Morning Stanford Sleepiness Scale
+,,
+,,"RLS, Ostberg, PSQI, Sleepiness Scale, EP, SNS"
