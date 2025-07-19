@@ -1,0 +1,187 @@
+# cNVAE-PSG Default Configuration
+# Configuration for Cross-Modal PSG-to-ECG Reconstruction
+
+# Project Settings
+project:
+  name: "cNVAE-PSG"
+  version: "0.1.0"
+  experiment_name: "phase1_baseline"
+  output_dir: "./experiments"
+  log_level: "INFO"
+
+# Data Configuration
+data:
+  # Paths (can be overridden by environment variables)
+  root_dir: "${TC_DATA:-.}"
+  edf_dir: "${TC_DATA}/gcs/EDF_Files"
+  clinical_csv: "${TC_DATA}/gcs/TCAIREM_SleepLabData.csv"
+  data_dict_csv: "${TC_DATA}/Sleep Data Organization - All Data Variables.csv"
+  output_dir: "${TC_DATA}/sleep_eda_output"
+  
+  # Signal Processing
+  target_sampling_rate: 250  # Hz
+  signal_duration: 30        # seconds per epoch
+  overlap: 0.5              # 50% overlap between epochs
+  
+  # Data Splits
+  train_split: 0.7
+  val_split: 0.15
+  test_split: 0.15
+  random_seed: 42
+  
+  # Signal Channels
+  psg_channels:
+    - "C3-A2"    # EEG Central
+    - "C4-A1" 
+    - "O1-A2"    # EEG Occipital
+    - "O2-A1"
+    - "LOC-A2"   # EOG Left
+    - "ROC-A1"   # EOG Right
+    - "EMG1-EMG2" # EMG Chin
+    - "Airflow"   # Nasal airflow
+    - "Chest"     # Chest effort
+    - "Abdomen"   # Abdominal effort
+  
+  ecg_channels:
+    - "ECG1"
+    - "ECG2"
+  
+  # Preprocessing
+  filters:
+    highpass: 0.5   # Hz
+    lowpass: 35.0   # Hz
+    notch: 60.0     # Hz (power line noise)
+  
+  # Data Augmentation
+  augmentation:
+    enabled: true
+    noise_std: 0.01
+    time_shift_max: 0.1  # seconds
+    amplitude_scale_range: [0.9, 1.1]
+
+# Model Configuration
+model:
+  # Architecture
+  name: "cNVAE"
+  
+  # Encoder
+  encoder:
+    input_channels: 10    # Number of PSG channels
+    hidden_dims: [64, 128, 256, 512]
+    latent_dim: 256
+    num_layers: 4
+    dropout: 0.1
+  
+  # Vector Quantization
+  vq:
+    num_embeddings: 512
+    embedding_dim: 256
+    commitment_cost: 0.25
+    decay: 0.99
+  
+  # Decoder
+  decoder:
+    output_channels: 2    # Number of ECG leads
+    hidden_dims: [512, 256, 128, 64]
+    latent_dim: 256
+    num_layers: 4
+    dropout: 0.1
+  
+  # Conditioning
+  conditioning:
+    use_sleep_stage: true
+    use_demographics: true
+    use_clinical_features: true
+    embedding_dim: 64
+
+# Training Configuration
+training:
+  # Optimization
+  batch_size: 32
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  optimizer: "AdamW"
+  scheduler: "ReduceLROnPlateau"
+  
+  # Loss Function
+  loss:
+    reconstruction_weight: 1.0
+    vq_weight: 1.0
+    commitment_weight: 0.25
+    perceptual_weight: 0.1
+  
+  # Training Process
+  max_epochs: 100
+  early_stopping_patience: 10
+  gradient_clip_value: 1.0
+  accumulate_grad_batches: 1
+  
+  # Validation
+  val_check_interval: 1.0
+  val_split_ratio: 0.15
+  
+  # Checkpointing
+  save_top_k: 3
+  monitor_metric: "val_loss"
+  monitor_mode: "min"
+
+# Evaluation Configuration
+evaluation:
+  metrics:
+    - "mse"
+    - "mae" 
+    - "pearson_correlation"
+    - "spectral_distance"
+    - "morphology_similarity"
+  
+  # Visualization
+  generate_plots: true
+  plot_samples: 10
+  save_reconstructions: true
+
+# Logging Configuration
+logging:
+  # TensorBoard
+  tensorboard:
+    enabled: true
+    log_dir: "./experiments/logs"
+    log_graph: true
+  
+  # Weights & Biases
+  wandb:
+    enabled: false  # Set to true if using W&B
+    project: "cnvae-psg"
+    entity: "tcairem"
+  
+  # Console Logging
+  console_level: "INFO"
+  file_level: "DEBUG"
+
+# Hardware Configuration
+hardware:
+  # GPU Settings
+  accelerator: "auto"  # auto, gpu, cpu
+  devices: "auto"
+  precision: "16-mixed"  # 16-mixed, 32
+  
+  # Memory Management
+  max_memory_gb: 16
+  num_workers: 4
+  pin_memory: true
+
+# Research Configuration
+research:
+  # Phase 1 Success Criteria
+  phase1_targets:
+    min_correlation: 0.2
+    max_reconstruction_error: 0.5
+  
+  # Reproducibility
+  deterministic: true
+  benchmark: false
+  seed_everything: 42
+  
+  # Experiment Tracking
+  track_hyperparameters: true
+  save_model_artifacts: true
+  log_system_metrics: true

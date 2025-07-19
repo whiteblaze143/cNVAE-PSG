@@ -1,0 +1,330 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\usepackage{bm}
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{natbib}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\title{Cross-Modal PSG-to-ECG Reconstruction using Conditional Neural Vector Quantized Variational Autoencoders: Mathematical Framework}
+\author{T-CAIREM Research Team}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+We present a mathematically rigorous framework for cross-modal reconstruction from polysomnography (PSG) signals to electrocardiography (ECG) using conditional Neural Vector Quantized Variational Autoencoders (cNVAE-PSG). This work extends the hierarchical variational autoencoder paradigm to the challenging domain of sleep-cardiac signal reconstruction, incorporating clinical conditioning variables and physiological constraints. Our approach addresses the fundamental question of whether cardiac rhythms during sleep can be reconstructed from multi-modal PSG signals, with potential applications in reducing sensor burden and enhancing sleep-cardiac monitoring.
+\end{abstract}
+
+\section{Introduction and Clinical Motivation}
+
+Sleep disorders affect cardiovascular health through complex physiological mechanisms involving autonomic nervous system modulation, respiratory patterns, and hemodynamic changes \cite{somers2008sleep}. Traditional polysomnography requires multiple sensors including electrocardiography (ECG) leads, creating patient discomfort and potential signal artifacts. We investigate whether ECG signals can be reconstructed from other PSG modalities using deep generative models.
+
+\subsection{Problem Formulation}
+
+Let $\mathbf{X} = \{\mathbf{x}_1, \mathbf{x}_2, \ldots, \mathbf{x}_N\}$ denote a dataset of synchronized multi-modal sleep recordings, where each sample $\mathbf{x}_i$ contains:
+
+\begin{align}
+\mathbf{x}_i = \{\mathbf{s}_i^{\text{PSG}}, \mathbf{s}_i^{\text{ECG}}, \mathbf{c}_i\}
+\end{align}
+
+where:
+\begin{itemize}
+\item $\mathbf{s}_i^{\text{PSG}} \in \mathbb{R}^{7 \times T}$ represents the 7-channel PSG conditioning signals (EEG, EOG, EMG, respiratory, SpO₂, airflow, position)
+\item $\mathbf{s}_i^{\text{ECG}} \in \mathbb{R}^{1 \times T}$ represents the target ECG signal (Lead II)
+\item $\mathbf{c}_i \in \mathbb{R}^{5}$ represents clinical conditioning variables (Age, BMI, Sex, AHI severity)
+\item $T = 1920$ samples correspond to 15-second windows at 128 Hz sampling rate
+\end{itemize}
+
+Our objective is to learn a conditional generative model $p_\theta(\mathbf{s}^{\text{ECG}} | \mathbf{s}^{\text{PSG}}, \mathbf{c})$ that can reconstruct physiologically plausible ECG signals from PSG inputs and clinical context.
+
+\section{Mathematical Framework}
+
+\subsection{Hierarchical Variational Autoencoder Foundation}
+
+Following the NVAE architecture \cite{vahdat2020nvae}, we employ a hierarchical latent variable model with $L$ scales of latent variables. The generative model is defined as:
+
+\begin{align}
+p_\theta(\mathbf{s}^{\text{ECG}}, \mathbf{z}_{1:L} | \mathbf{s}^{\text{PSG}}, \mathbf{c}) = p_\theta(\mathbf{s}^{\text{ECG}} | \mathbf{z}_{1:L}) \prod_{l=1}^{L} p_\theta(\mathbf{z}_l | \mathbf{z}_{l+1:L}, \mathbf{s}^{\text{PSG}}, \mathbf{c})
+\end{align}
+
+where $\mathbf{z}_l \in \mathbb{R}^{C_l \times H_l \times W_l}$ represents latent variables at scale $l$, with spatial dimensions $H_l \times W_l$ and $C_l$ channels.
+
+\subsection{Conditional NVAE for PSG-ECG Reconstruction}
+
+\subsubsection{Encoder Architecture}
+
+The encoder network $q_\phi(\mathbf{z}_{1:L} | \mathbf{s}^{\text{PSG}}, \mathbf{s}^{\text{ECG}}, \mathbf{c})$ processes the PSG conditioning signals through a hierarchical bottom-up pathway:
+
+\begin{align}
+\mathbf{h}_0 &= \text{Stem}(\mathbf{s}^{\text{PSG}}) + \text{SleepPrior}(\mathbf{c}) \\
+\mathbf{h}_{l} &= \text{EncCell}_l(\mathbf{h}_{l-1}) \quad \text{for } l = 1, \ldots, L
+\end{align}
+
+where $\text{SleepPrior}(\mathbf{c})$ is a multilayer perceptron that embeds clinical variables:
+
+\begin{align}
+\text{SleepPrior}(\mathbf{c}) = \text{ReLU}(\mathbf{W}_2 \text{ReLU}(\mathbf{W}_1 \mathbf{c} + \mathbf{b}_1) + \mathbf{b}_2)
+\end{align}
+
+The approximate posterior at each scale is parameterized as:
+
+\begin{align}
+q_\phi(\mathbf{z}_l | \mathbf{h}_l, \mathbf{z}_{l+1:L}) = \mathcal{N}(\mathbf{z}_l; \boldsymbol{\mu}_l^q, \text{diag}(\boldsymbol{\sigma}_l^q)^2)
+\end{align}
+
+where $[\boldsymbol{\mu}_l^q, \log \boldsymbol{\sigma}_l^q] = \text{EncSampler}_l(\mathbf{h}_l)$.
+
+\subsubsection{Decoder Architecture}
+
+The decoder follows a top-down generative pathway, incorporating both PSG conditioning and clinical variables through a cross-modal attention mechanism:
+
+\begin{align}
+\mathbf{g}_L &= \text{Prior}_L(\mathbf{c}) \\
+\mathbf{g}_{l-1} &= \text{DecCell}_l(\mathbf{g}_l, \mathbf{z}_l) \quad \text{for } l = L, \ldots, 1
+\end{align}
+
+The prior distribution at each scale is conditioned on higher-level latents and clinical variables:
+
+\begin{align}
+p_\theta(\mathbf{z}_l | \mathbf{z}_{l+1:L}, \mathbf{c}) = \mathcal{N}(\mathbf{z}_l; \boldsymbol{\mu}_l^p, \text{diag}(\boldsymbol{\sigma}_l^p)^2)
+\end{align}
+
+where $[\boldsymbol{\mu}_l^p, \log \boldsymbol{\sigma}_l^p] = \text{DecSampler}_l(\mathbf{g}_l)$.
+
+\subsection{Output Distribution and ECG Generation}
+
+The final ECG reconstruction is modeled through a Gaussian output distribution:
+
+\begin{align}
+p_\theta(\mathbf{s}^{\text{ECG}} | \mathbf{z}_{1:L}) = \mathcal{N}(\mathbf{s}^{\text{ECG}}; \boldsymbol{\mu}_{\text{ECG}}, \text{diag}(\boldsymbol{\sigma}_{\text{ECG}})^2)
+\end{align}
+
+where $[\boldsymbol{\mu}_{\text{ECG}}, \log \boldsymbol{\sigma}_{\text{ECG}}] = \text{ImageConditional}(\mathbf{g}_0)$.
+
+\subsection{Derived Lead Generation}
+
+To enhance clinical applicability, we compute additional ECG leads using Einthoven's triangle relationships:
+
+\begin{align}
+\text{Lead III} &= \text{Lead II} - \text{Lead I} \\
+\text{aVR} &= -\frac{1}{2}(\text{Lead I} + \text{Lead II}) \\
+\text{aVL} &= \frac{1}{2}(\text{Lead I} - \text{Lead II}) \\
+\text{aVF} &= \frac{1}{2}(\text{Lead II} + \text{Lead III})
+\end{align}
+
+This provides a 4-lead ECG representation from the primary Lead II reconstruction.
+
+\section{Loss Function and Training Objective}
+
+\subsection{Evidence Lower Bound (ELBO)}
+
+The complete training objective maximizes the conditional ELBO:
+
+\begin{align}
+\mathcal{L}_{\text{ELBO}} &= \mathbb{E}_{q_\phi(\mathbf{z}_{1:L} | \mathbf{s}^{\text{PSG}}, \mathbf{s}^{\text{ECG}}, \mathbf{c})} \left[ \log p_\theta(\mathbf{s}^{\text{ECG}} | \mathbf{z}_{1:L}) \right] \\
+&\quad - \sum_{l=1}^{L} \text{KL}\left( q_\phi(\mathbf{z}_l | \mathbf{h}_l, \mathbf{z}_{l+1:L}) \| p_\theta(\mathbf{z}_l | \mathbf{z}_{l+1:L}, \mathbf{c}) \right)
+\end{align}
+
+\subsection{Reconstruction Loss}
+
+The reconstruction term is computed as the negative log-likelihood of the Gaussian output distribution:
+
+\begin{align}
+\mathcal{L}_{\text{recon}} = -\log p_\theta(\mathbf{s}^{\text{ECG}} | \mathbf{z}_{1:L}) = \frac{1}{2} \left\| \frac{\mathbf{s}^{\text{ECG}} - \boldsymbol{\mu}_{\text{ECG}}}{\boldsymbol{\sigma}_{\text{ECG}}} \right\|_2^2 + \log \boldsymbol{\sigma}_{\text{ECG}}
+\end{align}
+
+\subsection{KL Divergence with Balancing}
+
+To prevent posterior collapse in hierarchical models, we employ KL balancing with scale-dependent coefficients:
+
+\begin{align}
+\mathcal{L}_{\text{KL}} = \sum_{l=1}^{L} \alpha_l \cdot \text{KL}\left( q_\phi(\mathbf{z}_l | \cdot) \| p_\theta(\mathbf{z}_l | \cdot) \right)
+\end{align}
+
+where $\alpha_l = \left(\frac{2^l}{\text{groups}_l}\right)$ provides greater weight to deeper latent scales.
+
+\subsection{Physiological Correlation Penalty}
+
+To encourage physiologically meaningful reconstructions, we add a correlation-based auxiliary loss:
+
+\begin{align}
+\mathcal{L}_{\text{corr}} = 1 - \frac{1}{B} \sum_{i=1}^{B} \text{Corr}(\mathbf{s}_i^{\text{ECG}}, \boldsymbol{\mu}_{\text{ECG},i})
+\end{align}
+
+where $\text{Corr}(\cdot, \cdot)$ is the Pearson correlation coefficient and $B$ is the batch size.
+
+\subsection{Complete Objective}
+
+The final training objective combines all loss components:
+
+\begin{align}
+\mathcal{L}_{\text{total}} = \mathcal{L}_{\text{recon}} + \beta \mathcal{L}_{\text{KL}} + \lambda \mathcal{L}_{\text{corr}}
+\end{align}
+
+where $\beta$ follows a KL annealing schedule and $\lambda = 0.2$ weights the correlation penalty.
+
+\section{Training Protocol and Optimization}
+
+\subsection{Data Preprocessing}
+
+Signal preprocessing follows clinical standards for sleep studies:
+
+\begin{enumerate}
+\item Resampling to 128 Hz for computational efficiency
+\item Bandpass filtering: ECG (0.5-40 Hz), PSG (0.1-20 Hz)
+\item Z-score normalization using global dataset statistics
+\item 15-second windowing with 50\% overlap
+\end{enumerate}
+
+\subsection{Data Augmentation}
+
+To improve model robustness, we apply physiologically-motivated augmentations during training:
+
+\begin{itemize}
+\item Temporal shifting: $\pm 10\%$ of window length
+\item Amplitude scaling: uniform factor $\in [0.8, 1.2]$
+\item Additive Gaussian noise: 2\% of signal standard deviation
+\item Channel dropout: randomly zero 1-2 PSG channels
+\end{itemize}
+
+\subsection{Optimization Strategy}
+
+We employ the following training protocol:
+
+\begin{itemize}
+\item Optimizer: AdamW with $\epsilon = 10^{-3}$
+\item Learning rate: $10^{-3}$ with cosine annealing to $5 \times 10^{-4}$
+\item Batch size: 32 samples
+\item KL annealing: $\beta$ increases linearly from 0 to 1 over 30\% of training
+\item Weight decay: $3 \times 10^{-4}$ for model parameters
+\item Spectral regularization: $\lambda_{\text{spec}} = 10^{-2}$ for convolution weights
+\end{itemize}
+
+\section{Clinical Evaluation Metrics}
+
+\subsection{Signal Quality Assessment}
+
+We evaluate reconstruction quality using multiple complementary metrics:
+
+\subsubsection{Morphological Similarity}
+\begin{align}
+\text{RMSE} &= \sqrt{\frac{1}{T} \sum_{t=1}^{T} (\mathbf{s}^{\text{ECG}}_t - \hat{\mathbf{s}}^{\text{ECG}}_t)^2} \\
+r_{\text{Pearson}} &= \frac{\text{Cov}(\mathbf{s}^{\text{ECG}}, \hat{\mathbf{s}}^{\text{ECG}})}{\sigma_{\mathbf{s}^{\text{ECG}}} \sigma_{\hat{\mathbf{s}}^{\text{ECG}}}}
+\end{align}
+
+\subsubsection{Spectral Fidelity}
+\begin{align}
+\text{PSD}_{\text{diff}} = \int_{f_1}^{f_2} |P_{\mathbf{s}^{\text{ECG}}}(f) - P_{\hat{\mathbf{s}}^{\text{ECG}}}(f)| \, df
+\end{align}
+
+where $P(\cdot)$ denotes power spectral density and $[f_1, f_2] = [0.5, 40]$ Hz.
+
+\subsubsection{Clinical Relevance}
+Heart rate variability metrics:
+\begin{align}
+\text{RMSSD} &= \sqrt{\frac{1}{N-1} \sum_{i=1}^{N-1} (\text{RR}_{i+1} - \text{RR}_i)^2} \\
+\text{pNN50} &= \frac{\text{Count}(|\text{RR}_{i+1} - \text{RR}_i| > 50\text{ms})}{N-1} \times 100\%
+\end{align}
+
+\section{Experimental Design and Hypotheses}
+
+\subsection{Research Hypotheses}
+
+\begin{enumerate}
+\item[\textbf{H1:}] Sleep stage transitions correlate with cardiac rhythm changes, enabling cross-modal reconstruction
+\item[\textbf{H2:}] Respiratory events during sleep influence ECG morphology patterns
+\item[\textbf{H3:}] Clinical variables (age, BMI, severity) improve reconstruction accuracy
+\item[\textbf{H4:}] Hierarchical latent representations capture multi-scale physiological coupling
+\end{enumerate}
+
+\subsection{Success Criteria}
+
+\textbf{Phase 1 (Current):} Establish basic feasibility
+\begin{itemize}
+\item Target: Pearson correlation $r > 0.2$ between reconstructed and ground truth ECG
+\item RMSE: $< 0.3$ (normalized signal units)
+\item Spectral similarity: $> 70\%$ in clinically relevant frequency bands
+\end{itemize}
+
+\textbf{Phase 2 (Planned):} Clinical validation
+\begin{itemize}
+\item 10-15\% improvement over Phase 1 baselines
+\item HRV metrics within 20\% of ground truth
+\item Expert clinician assessment of reconstruction quality
+\end{itemize}
+
+\section{Ethical and Regulatory Considerations}
+
+This research operates under strict ethical guidelines:
+
+\begin{itemize}
+\item Sunnybrook Research Ethics Board approval (REB \#6197)
+\item Health Data Nexus Data Use Agreement compliance
+\item TCAIREM institutional oversight
+\item De-identification protocols for all patient data
+\item Explicit research-only usage restrictions
+\end{itemize}
+
+\section{Clinical Implications and Future Directions}
+
+\subsection{Potential Clinical Applications}
+
+\begin{enumerate}
+\item \textbf{Sensor Reduction:} Minimize patient discomfort during sleep studies
+\item \textbf{Quality Control:} Reconstruct ECG during periods of signal artifact
+\item \textbf{Risk Stratification:} Enhanced cardiovascular risk assessment during sleep
+\item \textbf{Remote Monitoring:} Simplified home sleep study protocols
+\end{enumerate}
+
+\subsection{Technical Extensions}
+
+\begin{enumerate}
+\item \textbf{Multi-lead ECG:} Extension to full 12-lead reconstruction
+\item \textbf{Real-time Processing:} Low-latency implementation for clinical monitoring
+\item \textbf{Uncertainty Quantification:} Bayesian neural networks for confidence estimation
+\item \textbf{Personalization:} Patient-specific model adaptation
+\end{enumerate}
+
+\section{Limitations and Challenges}
+
+\subsection{Technical Limitations}
+
+\begin{itemize}
+\item Limited to single-lead ECG reconstruction (Lead II)
+\item Fixed window length may miss longer-term physiological patterns
+\item Computational complexity limits real-time deployment
+\item Requires substantial training data for generalization
+\end{itemize}
+
+\subsection{Clinical Limitations}
+
+\begin{itemize}
+\item Validation limited to sleep laboratory setting
+\item Unknown performance across diverse patient populations
+\item Potential for missing subtle but clinically significant ECG abnormalities
+\item Regulatory approval pathway unclear for clinical deployment
+\end{itemize}
+
+\section{Conclusion}
+
+We present a mathematically rigorous framework for cross-modal PSG-to-ECG reconstruction using conditional hierarchical variational autoencoders. This approach addresses a clinically relevant problem while advancing the state-of-the-art in multi-modal physiological signal modeling. Our framework provides a foundation for reducing sensor burden in sleep studies while maintaining diagnostic quality.
+
+The success of this approach depends on the fundamental assumption that cardiac activity during sleep is sufficiently coupled to other physiological processes measured in PSG. Early results suggest this coupling exists and can be exploited for reconstruction, though continued validation across diverse patient populations and clinical scenarios remains essential.
+
+Future work will focus on extending to multi-lead ECG reconstruction, improving real-time performance, and conducting comprehensive clinical validation studies to establish the safety and efficacy of this approach in clinical practice.
+
+\section*{Acknowledgments}
+
+We thank the Sunnybrook Sleep Laboratory team for data collection and clinical expertise. This research is supported by T-CAIREM (Temerty Centre for AI Research and Education in Medicine) and conducted under the supervision of Dr. Christopher Cheung.
+
+\bibliographystyle{unsrt}
+\bibliography{references}
+
+\end{document}

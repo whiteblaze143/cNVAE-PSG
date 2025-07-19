@@ -1,0 +1,52 @@
+Research and Academic Use License
+
+Copyright (c) 2024 T-CAIREM (Temerty Centre for AI Research and Education in Medicine)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to use
+the Software solely for research and academic purposes, subject to the following
+conditions:
+
+1. RESEARCH USE ONLY: The Software may only be used for non-commercial research
+   and academic purposes. Commercial use is strictly prohibited without explicit
+   written permission from T-CAIREM.
+
+2. DATA ACCESS: Use of this Software with the associated Sunnybrook Sleep Laboratory
+   dataset requires separate authorization through the Health Data Nexus platform
+   and compliance with the T-CAIREM Data Use Agreement.
+
+3. ATTRIBUTION: Any publications, presentations, or research outputs that use this
+   Software must cite:
+   - This software repository
+   - The associated Sunnybrook Sleep Laboratory dataset (Berger et al., 2024)
+   - T-CAIREM as the funding organization
+
+4. NO WARRANTY: The Software is provided "as is", without warranty of any kind,
+   express or implied, including but not limited to the warranties of merchantability,
+   fitness for a particular purpose and noninfringement.
+
+5. CLINICAL RESTRICTION: This Software is for research purposes only and is NOT
+   intended for clinical use, diagnosis, or treatment of patients.
+
+6. ETHICS COMPLIANCE: Users must ensure compliance with all applicable research
+   ethics requirements, including but not limited to REB approvals where required.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+For commercial licensing inquiries, please contact:
+T-CAIREM
+University of Toronto
+tcairem@utoronto.ca
+
+Dataset Citation:
+Berger, S., Boulos, M., Tchoudnovski, D., Byeon, A., Tandon, A., & Murray, B. (2024).
+Comprehensive Sleep Laboratory Data: August - October 2024 (version 1.0).
+Health Data Nexus. https://doi.org/10.57764/tvsv-y363.
+
+Ethics Approval: Sunnybrook Research Ethics Board REB #6197
