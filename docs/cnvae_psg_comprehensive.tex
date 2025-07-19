@@ -80,34 +80,50 @@ Furthermore, home sleep apnea testing (HSAT), increasingly utilized for cost-eff
 
 The relationship between PSG signals—including EEG, EOG, EMG, respiratory flow, thoracic and abdominal respiratory inductance plethysmography (RIP), oxygen saturation (SpO\textsubscript{2}), and body position—and cardiac activity involves intricate physiological coupling mechanisms that vary across sleep stages, respiratory events, and autonomic nervous system fluctuations.
 
-From an electrophysiological perspective, sleep medicine imposes several domain-specific requirements that differ fundamentally from general-purpose ECG generation:
-
-\begin{enumerate}
-\item \textbf{Autonomic-Mediated Electrophysiological Coupling}: PSG and ECG signals exhibit complex interdependencies through sympathetic and parasympathetic modulation, with respiratory sinus arrhythmia serving as a key coupling mechanism
-\item \textbf{Sleep Stage-Dependent Electrophysiology}: The cardiac conduction system responds differently across sleep stages, with REM sleep characterized by increased sympathetic activity and variable heart rate, while NREM sleep shows parasympathetic dominance and more stable rhythms
-\item \textbf{Respiratory Event-Related Arrhythmogenesis}: Apneas, hypopneas, and arousals create characteristic electrophysiological patterns including post-apneic tachycardia, bradycardia during events, and increased ectopic activity
-\item \textbf{Clinical Diagnostic Relevance}: Generated ECG must preserve diagnostically relevant features essential for sleep medicine and cardiovascular risk assessment
-\item \textbf{Temporal Electrophysiological Coherence}: Long-term dependencies spanning minutes to hours must be maintained to capture circadian variation and cumulative effects of sleep disordered breathing
-\end{enumerate}
+From an electrophysiological perspective, sleep medicine imposes several domain-specific requirements that differ fundamentally from general-purpose ECG generation. First, there is a complex, autonomically-mediated electrophysiological coupling where PSG and ECG signals exhibit intricate interdependencies through sympathetic and parasympathetic modulation, with respiratory sinus arrhythmia serving as a key mechanism. Second, the cardiac conduction system demonstrates sleep stage-dependent electrophysiology, responding differently across sleep stages; REM sleep is characterized by increased sympathetic activity and variable heart rate, while NREM sleep shows parasympathetic dominance and more stable rhythms. Third, respiratory events are associated with arrhythmogenesis, as apneas, hypopneas, and arousals create characteristic electrophysiological patterns, including post-apneic tachycardia, bradycardia during events, and increased ectopic activity. Fourth, for any generated signal to be useful, it must maintain clinical diagnostic relevance by preserving features essential for sleep medicine and cardiovascular risk assessment. Finally, the model must ensure temporal electrophysiological coherence, maintaining long-term dependencies that span minutes to hours to capture circadian variation and the cumulative effects of sleep-disordered breathing.
 
 \subsection{Computational Electrophysiology and Cross-Modal Reconstruction}
 
 Recent advances in generative modeling, particularly hierarchical variational autoencoders (VAEs), offer unprecedented opportunities to bridge this clinical gap through physiologically-informed cross-modal signal reconstruction. The Normalizing Variational Autoencoder (NVAE) architecture has demonstrated remarkable success in modeling complex, high-dimensional data distributions while preserving physiological realism \cite{vahdat2020}.
 
-Building upon the seminal work of Sviridov and Egorov \cite{sviridov2024} on conditional ECG generation using hierarchical VAEs, we present a comprehensive framework specifically engineered for the unique challenges of sleep medicine electrophysiology. Our approach recognizes that sleep-related cardiac signals exhibit distinct characteristics compared to waking ECG, including:
-
-\begin{enumerate}
-\item \textbf{Autonomic State-Dependent Morphology}: ECG morphology varies significantly across sleep stages due to changing sympathovagal balance
-\item \textbf{Respiratory-Cardiac Coupling}: Strong temporal coupling between respiratory patterns and heart rate variability
-\item \textbf{Event-Related Electrophysiology}: Distinct cardiac responses to apneic events, arousals, and periodic limb movements
-\item \textbf{Circadian Electrophysiological Variation}: Natural variation in cardiac electrophysiology throughout the sleep period
-\end{enumerate}
+Building upon the seminal work of Sviridov and Egorov \cite{sviridov2024} on conditional ECG generation using hierarchical VAEs, we present a comprehensive framework specifically engineered for the unique challenges of sleep medicine electrophysiology. Our approach recognizes that sleep-related cardiac signals exhibit distinct characteristics compared to waking ECG. These include autonomic state-dependent morphology, where ECG waveforms vary significantly across sleep stages due to changing sympathovagal balance. There is also strong respiratory-cardiac coupling, a temporal linkage between respiratory patterns and heart rate variability. Furthermore, the framework must account for event-related electrophysiology, encompassing the distinct cardiac responses to apneic events, arousals, and periodic limb movements. Finally, the model must capture the natural circadian electrophysiological variation that occurs throughout the sleep period.
 
 \subsection{Clinical Innovation and Electrophysiological Impact}
 
 This paper presents the mathematical framework for conditional Neural Vector Quantized Variational Autoencoders for PSG-to-ECG reconstruction (cNVAE-PSG), specifically designed to address these electrophysiological challenges. Our primary contributions are threefold. First, we provide a mathematically rigorous formalization of the sleep-cardiac cross-modal reconstruction problem that incorporates fundamental electrophysiological principles. Second, we extend hierarchical VAE theory to integrate sleep-specific physiological constraints and the complex coupling between cardiac and respiratory systems. Third, we introduce novel conditioning mechanisms that leverage clinical sleep variables and autonomic markers to improve physiological fidelity. This work also includes a comprehensive analysis of sleep-cardiac coupling through probabilistic modeling informed by electrophysiological expertise and proposes a detailed clinical validation framework to ensure the diagnostic relevance of the model for both sleep medicine and electrophysiology applications.
 
 From a clinical workflow perspective, our cNVAE-PSG framework aims to address critical gaps in the care pathway between sleep medicine and electrophysiology. It enables retrospective cardiac risk stratification by analyzing existing sleep study databases for previously undetected arrhythmias and conduction abnormalities. The framework can enhance home sleep testing by adding sophisticated cardiac monitoring capabilities to portable sleep devices without requiring additional hardware. Furthermore, it provides a foundation for real-time arrhythmia detection, allowing for integration with sleep laboratory workflows for immediate cardiac consultation when clinically significant events are detected. This technology can also be used for the longitudinal assessment of cardiac electrophysiological changes in response to sleep disorder treatments, such as CPAP therapy, thereby facilitating risk-stratified patient care through the early identification of individuals requiring expedited electrophysiological evaluation.
+
+\section{Methodology}
+
+The development of the cNVAE-PSG framework is grounded in a comprehensive methodology that spans data curation, signal processing, feature engineering, and model training. This section details the systematic approach employed to prepare the data and configure the model for the task of cross-modal PSG-to-ECG reconstruction.
+
+\subsection{Data Curation and Cohort Definition}
+The study cohort is derived from a large clinical database containing polysomnography recordings and associated clinical data. The core dataset includes multi-channel PSG signals from EDF files and extensive clinical variables from the `TCAIREM_SleepLabData.csv` file. A critical initial step involves the meticulous standardization of patient identifiers across different data sources. We employ a `PatientIDManager` utility that uses regular expressions and a canonical mapping to ensure consistent patient linkage between signal files and clinical records. This process resolves inconsistencies and creates a unified `ParticipantKey` for robust data integration.
+
+\subsection{Clinical Feature Engineering for Conditioning}
+A key innovation of our framework is the use of a rich clinical feature vector, $\mathbf{c}_{\text{sleep}}$, to condition the generative process. The creation of this vector involves several stages of preprocessing and feature engineering.
+
+\subsubsection{Variable Selection}
+A set of clinically relevant variables is selected from the available data to form the basis of the conditioning vector. Based on the implementation, these include key patient demographics and sleep severity metrics: patient age (`ptage`), Body Mass Index (`BMI`), sex (encoded as `Sex_Female`, `Sex_Male`), and the log-transformed Apnea-Hypopnea Index (`log_AHI`).
+
+\subsubsection{Imputation of Missing Data}
+Clinical datasets are often incomplete. To address missing data in the selected numeric features without discarding valuable patient records, we employ a straightforward and robust imputation strategy. Missing values in continuous variables such as `log_AHI`, `ptage`, and `BMI` are filled with the median value of the respective feature calculated across the entire dataset.
+
+\subsubsection{Feature Standardization}
+Following imputation, the clinical features are transformed into a standardized format suitable for the neural network. Categorical variables (e.g., sex) are one-hot encoded. The continuous numeric variables are then standardized using a `RobustScaler`, which scales features using statistics that are robust to outliers by removing the median and scaling the data according to the interquartile range. This process results in a final clinical feature matrix, $\mathbf{c}_{\text{sleep}}$, where each patient is represented by a normalized vector of their clinical characteristics.
+
+\subsection{Signal Processing Pipeline}
+The raw PSG and ECG signals undergo a standardized processing pipeline to prepare them for the model. This involves several steps to ensure data consistency and quality. First, the continuous recordings are segmented into non-overlapping 15-second windows, a duration chosen to capture meaningful physiological dynamics while remaining computationally tractable. Second, all signals within each window are resampled to a uniform sampling frequency of 128 Hz to ensure consistency across all recordings and align the data with the model's input requirements. Third, to remove noise and isolate the physiological frequency bands of interest, separate band-pass filters are applied; the ECG signal is filtered between 0.5 and 40 Hz, while the PSG channels are filtered between 0.1 and 20 Hz. Finally, a z-score normalization is applied to every window using global mean and standard deviation statistics computed for each channel across the entire training dataset, a scheme that preserves the relative physiological variations within each signal.
+
+\subsection{Data Augmentation and Sampling}
+To improve model generalization and robustness, we employ both data augmentation and balanced sampling strategies during training.
+
+\subsubsection{Data Augmentation}
+On-the-fly data augmentation is applied to the training set. This includes several techniques to enhance model robustness. Time shifting is used, where signals are randomly rolled along the time axis to create tolerance to minor temporal misalignments. Amplitude scaling is also applied, which involves multiplying the signal by a random factor to simulate variations in sensor gain. To improve the model's resilience to signal artifacts, a small amount of Gaussian noise is injected. Finally, channel dropout is employed, where one or more PSG channels are randomly set to zero, forcing the model to learn robust representations from incomplete data.
+
+\subsubsection{Balanced Sampling}
+To mitigate biases from imbalances in the dataset, such as the over-representation of certain patients or disease severities, we use a `WeightedRandomSampler`. This sampler can be configured to balance the training batches by patient, ensuring each patient contributes more equally to the training process, or by a clinically relevant variable such as AHI severity.
 
 \section{Mathematical Framework for Sleep-Cardiac Coupling}
 
@@ -146,192 +162,83 @@ p(\mathbf{z}_l | \mathbf{z}_{<l}, \mathbf{c}_{\text{sleep}}) = \mathcal{N}(\bold
 
 \subsection{Conditional Encoding for PSG Signals}
 
-The encoder maps PSG signals to the latent hierarchy through a sequence of conditional transformations:
+During training, the encoder network learns to approximate the true posterior distribution $p_\theta(\mathbf{z} | \mathbf{Y}_{\text{ECG}}, \mathbf{X}_{\text{PSG}}, \mathbf{c}_{\text{sleep}})$. It maps both the PSG and the target ECG signals to the latent hierarchy:
 
 \begin{align}
-q_\phi(\mathbf{z} | \mathbf{X}_{\text{PSG}}, \mathbf{c}_{\text{sleep}}) = \prod_{l=1}^L q_\phi(\mathbf{z}_l | \mathbf{z}_{<l}, \mathbf{h}_l)
+q_\phi(\mathbf{z} | \mathbf{Y}_{\text{ECG}}, \mathbf{X}_{\text{PSG}}, \mathbf{c}_{\text{sleep}}) = \prod_{l=1}^L q_\phi(\mathbf{z}_l | \mathbf{z}_{<l}, \mathbf{h}_l)
 \end{align}
 
-where $\mathbf{h}_l$ represents the encoder hidden state at scale $l$:
+where $\mathbf{h}_l$ represents the encoder hidden state at scale $l$, which processes information from both input modalities:
 
 \begin{align}
-\mathbf{h}_l = f_{\text{enc},l}(\mathbf{h}_{l-1}, \text{PSG-Conv}(\mathbf{X}_{\text{PSG}}), \mathbf{c}_{\text{sleep}})
+\mathbf{h}_l = f_{\text{enc},l}(\mathbf{h}_{l-1}, \text{Conv}(\mathbf{X}_{\text{PSG}}, \mathbf{Y}_{\text{ECG}}), \mathbf{c}_{\text{sleep}})
 \end{align}
 
 \subsection{Sleep-Conditional Decoder}
 
-The decoder reconstructs ECG signals from the latent hierarchy:
-
+The decoder reconstructs the ECG signal from the latent hierarchy using a feed-forward convolutional architecture. It synthesizes the entire signal window $\mathbf{Y}_{\text{ECG}}$ in a single pass. The distribution of the output is conditioned on the full set of latent variables and the clinical features:
 \begin{align}
-p_\theta(\mathbf{Y}_{\text{ECG}} | \mathbf{z}, \mathbf{c}_{\text{sleep}}) = \prod_{t=1}^T p_\theta(y_t | \mathbf{z}, \mathbf{c}_{\text{sleep}}, \mathbf{y}_{<t})
+p_\theta(\mathbf{Y}_{\text{ECG}} | \mathbf{z}, \mathbf{c}_{\text{sleep}})
 \end{align}
+Internally, the decoder architecture uses a series of transposed convolutional layers to upsample the latent representations, integrating information from the latent variables $\mathbf{z}$ and the conditioning variables $\mathbf{c}_{\text{sleep}}$ at each stage to produce the final high-resolution output waveform.
 
-where $\mathbf{h}_{\text{dec}}$ represents decoder hidden states and $\mathbf{h}_{\text{PSG}}$ represents encoded PSG features.
+\section{Computational Complexity Analysis}
 
-\section{Sleep-Specific Loss Functions and Regularization}
-
-\subsection{Complete Objective Function}
-
-The total loss function for cNVAE-PSG incorporates multiple components tailored for sleep medicine, summarized in Table \ref{tab:loss_summary}.
-
+\subsection{Time Complexity}
+For input sequences of length $T$ with $L$ latent scales, the time complexity of a single training step is dominated by the convolutional and attention layers within the architecture:
 \begin{align}
-\mathcal{L}_{\text{total}} &= \mathcal{L}_{\text{recon}} + \beta \mathcal{L}_{\text{KL}} + \lambda_{\text{phys}} \mathcal{L}_{\text{phys}} \\
+\mathcal{O}_{\text{training}} = \mathcal{O}(T \log T \cdot L \cdot D^2)
+\end{align}
+where $D$ represents the maximum latent dimension.
+
+\subsection{Space Complexity}
+The memory required to store model parameters and intermediate activations for a single training instance scales with:
+\begin{align}
+\mathcal{O}_{\text{memory}} = \mathcal{O}(B \cdot T \cdot C + L \cdot D^2)
+\end{align}
+where $B$ is the batch size and $C$ is the number of input channels.
+
+\subsection{Inference Efficiency}
+For the model to be clinically viable for real-time applications, it must meet stringent performance criteria. The forward pass for a 15-second window must be completed in under 100 milliseconds. The model's memory footprint should not exceed 2 GB of GPU memory, and it must be compatible with CPU-based deployment for wider accessibility in clinical environments.
+
+\section{Training Objective: Core Loss and Proposed Extensions}
+
+\subsection{Core Objective and Proposed Physiological Extensions}
+
+The core objective of the cNVAE-PSG framework, as currently implemented, is the maximization of the conditional Evidence Lower Bound (ELBO). This objective consists of a reconstruction term and a KL divergence term, which together form the standard VAE loss function: $\mathcal{L}_{\text{ELBO}} = \mathcal{L}_{\text{recon}} + \beta \mathcal{L}_{\text{KL}}$.
+
+For future work, to enhance the physiological plausibility of the generated signals, we propose the integration of several auxiliary loss functions. These additional components, designed to enforce specific clinical and electrophysiological constraints, are summarized in Table \ref{tab:loss_summary}. The complete, proposed objective function for future iterations of the model would be a weighted sum of these components:
+\begin{align}
+\mathcal{L}_{\text{total}} &= \mathcal{L}_{\text{ELBO}} + \lambda_{\text{phys}} \mathcal{L}_{\text{phys}} \\
 &\quad + \lambda_{\text{sleep}} \mathcal{L}_{\text{sleep}} + \lambda_{\text{hrv}} \mathcal{L}_{\text{hrv}}
 \end{align}
 
 \begin{table}[H]
     \centering
-    \caption{Summary of Loss Function Components for cNVAE-PSG}
+    \caption{Summary of Implemented and Proposed Loss Function Components}
     \label{tab:loss_summary}
-    \begin{tabular}{p{0.15\textwidth} p{0.4\textwidth} p{0.35\textwidth}}
+    \begin{tabular}{p{0.15\textwidth} p{0.35\textwidth} p{0.3\textwidth} p{0.1\textwidth}}
         \toprule
-        \textbf{Component} & \textbf{Mathematical Formulation} & \textbf{Clinical \& Electrophysiological Purpose} \\
+        \textbf{Component} & \textbf{Mathematical Formulation} & \textbf{Clinical \& Electrophysiological Purpose} & \textbf{Status} \\
         \midrule
-        $\mathcal{L}_{\text{recon}}$ & $-\mathbb{E}_{q_\phi}[\log p_\theta(\mathbf{Y}_{\text{ECG}} | \mathbf{z}, \mathbf{c}_{\text{sleep}})]$ & Ensures the reconstructed ECG waveform is morphologically similar to the ground truth, preserving key features like P-QRS-T waves. \\
+        $\mathcal{L}_{\text{recon}}$ & $-\mathbb{E}_{q_\phi}[\log p_\theta(\mathbf{Y}_{\text{ECG}} | \mathbf{z}, \mathbf{c}_{\text{sleep}})]$ & Ensures morphological similarity to the ground truth ECG waveform. & Implemented \\
         \midrule
-        $\mathcal{L}_{\text{KL}}$ & $\sum_{l} \alpha_l \text{KL}[q_\phi(\mathbf{z}_l) \| p(\mathbf{z}_l)]$ & Regularizes the latent space to prevent overfitting and ensure the generative model learns a smooth, generalizable representation of sleep physiology. \\
+        $\mathcal{L}_{\text{KL}}$ & $\sum_{l} \alpha_l \text{KL}[q_\phi(\mathbf{z}_l) \| p(\mathbf{z}_l)]$ & Regularizes the latent space to ensure a smooth, generalizable representation. & Implemented \\
         \midrule
-        $\mathcal{L}_{\text{phys}}$ & $\mathcal{L}_{\text{causality}} + \mathcal{L}_{\text{bandwidth}} + \mathcal{L}_{\text{amplitude}}$ & Enforces fundamental physiological constraints on the generated signal, ensuring it adheres to known electrophysiological principles. \\
+        $\mathcal{L}_{\text{phys}}$ & $\mathcal{L}_{\text{causality}} + \mathcal{L}_{\text{bandwidth}} + \mathcal{L}_{\text{amplitude}}$ & Enforces fundamental physiological constraints on the generated signal. & Proposed \\
         \midrule
-        $\mathcal{L}_{\text{sleep}}$ & $\mathcal{L}_{\text{stage}} + \mathcal{L}_{\text{event}} + \mathcal{L}_{\text{circadian}}$ & Imposes sleep-specific knowledge, ensuring the ECG reflects the correct autonomic state associated with different sleep stages and events. \\
+        $\mathcal{L}_{\text{sleep}}$ & $\mathcal{L}_{\text{stage}} + \mathcal{L}_{\text{event}} + \mathcal{L}_{\text{circadian}}$ & Imposes sleep-specific knowledge for correct autonomic state representation. & Proposed \\
         \midrule
-        $\mathcal{L}_{\text{hrv}}$ & $\sum_{k} w_k \|\text{HRV}_k(\hat{\mathbf{Y}}) - \text{HRV}_k(\mathbf{Y})\|_2^2$ & Explicitly preserves critical heart rate variability metrics (e.g., RMSSD, SDNN), which are key biomarkers for cardiovascular health and autonomic function. \\
+        $\mathcal{L}_{\text{hrv}}$ & $\sum_{k} w_k \|\text{HRV}_k(\hat{\mathbf{Y}}) - \text{HRV}_k(\mathbf{Y})\|_2^2$ & Preserves critical heart rate variability metrics for cardiovascular assessment. & Proposed \\
         \bottomrule
     \end{tabular}
 \end{table}
 
-\subsection{Reconstruction Loss with Clinical Weighting}
+\subsection{Training Procedure}
 
-\begin{align}
-\mathcal{L}_{\text{recon}} = -\mathbb{E}_{q_\phi(\mathbf{z}|\mathbf{X}_{\text{PSG}}, \mathbf{c}_{\text{sleep}})}[\log p_\theta(\mathbf{Y}_{\text{ECG}} | \mathbf{z}, \mathbf{c}_{\text{sleep}})]
-\end{align}
+The model is trained using the Adam optimizer. The learning rate is initialized to $1 \times 10^{-3}$ and managed with a cosine annealing schedule that gradually reduces it to a minimum of $5 \times 10^{-4}$ over the course of training. We employ a KL annealing strategy where the weight of the KL divergence term in the loss function is gradually increased over the first 30\% of the training epochs, after which it is held at a small constant value (0.0001). This prevents the model from ignoring the reconstruction term in the early stages of training. A batch size of 32 is used. The training process is further accelerated through the use of mixed-precision arithmetic, enabled by `torch.cuda.amp`. Weight decay is set to 0 for most parameters, with a separate, larger weight decay of 1e-2 applied to normalization layers.
 
-For sleep medicine applications, we use a temporally-weighted reconstruction loss:
-
-\begin{align}
-\mathcal{L}_{\text{recon}} = \sum_{t=1}^T w_{\text{sleep}}(t) \|\mathbf{Y}_{\text{ECG}}(t) - \hat{\mathbf{Y}}_{\text{ECG}}(t)\|_2^2
-\end{align}
-
-where $w_{\text{sleep}}(t)$ increases weight during respiratory events and sleep transitions.
-
-\subsection{KL Divergence with Sleep-Stage Balancing}
-
-\begin{align}
-\mathcal{L}_{\text{KL}} = \sum_{l=1}^L \alpha_l \text{KL}[q_\phi(\mathbf{z}_l | \mathbf{X}_{\text{PSG}}, \mathbf{c}_{\text{sleep}}) \| p(\mathbf{z}_l | \mathbf{c}_{\text{sleep}})]
-\end{align}
-
-where $\alpha_l$ represents sleep-stage dependent balancing coefficients.
-
-\subsection{Physiological Constraint Loss}
-
-\begin{align}
-\mathcal{L}_{\text{phys}} = \mathcal{L}_{\text{causality}} + \mathcal{L}_{\text{bandwidth}} + \mathcal{L}_{\text{amplitude}}
-\end{align}
-
-\subsubsection{Causality Constraint}
-Ensures that ECG features respect physiological causality:
-\begin{align}
-\mathcal{L}_{\text{causality}} = \sum_{i,j} \max(0, \text{CrossCorr}(\mathbf{Y}_{\text{ECG}}[i], \mathbf{X}_{\text{PSG}}[j]) - \tau_{\max})
-\end{align}
-
-\subsubsection{Bandwidth Constraint}
-Ensures generated ECG respects physiological frequency bands:
-\begin{align}
-\mathcal{L}_{\text{bandwidth}} = \|\text{PSD}(\hat{\mathbf{Y}}_{\text{ECG}}) - \text{PSD}(\mathbf{Y}_{\text{ECG}})\|_2^2
-\end{align}
-
-\subsubsection{Amplitude Constraint}
-Ensures the generated ECG signal has realistic voltage amplitudes, preventing physiologically implausible outputs.
-\begin{align}
-\mathcal{L}_{\text{amplitude}} = \max(0, \|\hat{\mathbf{Y}}_{\text{ECG}}\|_{\infty} - V_{\max})
-\end{align}
-where $V_{\max}$ is the maximum plausible physiological voltage (e.g., 5 mV).
-
-\subsection{Sleep-Specific Regularization}
-
-\begin{align}
-\mathcal{L}_{\text{sleep}} = \mathcal{L}_{\text{stage}} + \mathcal{L}_{\text{event}} + \mathcal{L}_{\text{circadian}}
-\end{align}
-
-\subsubsection{Sleep Stage Consistency}
-\begin{align}
-\mathcal{L}_{\text{stage}} = \sum_{s \in \{\text{N1,N2,N3,REM}\}} \|f_{\text{stage}}(\hat{\mathbf{Y}}_{\text{ECG}}) - s\|_2^2
-\end{align}
-
-\subsubsection{Respiratory Event Coherence}
-\begin{align}
-\mathcal{L}_{\text{event}} = \|\text{DetectApnea}(\hat{\mathbf{Y}}_{\text{ECG}}) - \text{DetectApnea}(\mathbf{X}_{\text{respiratory}})\|_2^2
-\end{align}
-
-\subsubsection{Circadian Rhythm Consistency}
-Encourages the model to learn long-term, slowly-varying physiological trends over the entire sleep period, such as the nocturnal dip in heart rate.
-\begin{align}
-\mathcal{L}_{\text{circadian}} = \|\text{LowPass}(\text{HR}(\hat{\mathbf{Y}}_{\text{ECG}})) - \text{LowPass}(\text{HR}(\mathbf{Y}_{\text{ECG}}))\|_2^2
-\end{align}
-
-\subsection{Heart Rate Variability Preservation}
-
-\begin{align}
-\mathcal{L}_{\text{hrv}} = \sum_{k} w_k \|\text{HRV}_k(\hat{\mathbf{Y}}_{\text{ECG}}) - \text{HRV}_k(\mathbf{Y}_{\text{ECG}})\|_2^2
-\end{align}
-
-where HRV\textsubscript{k} includes RMSSD, pNN50, SDNN, and frequency domain measures.
-
-\section{Architecture Design for Sleep Medicine}
-
-\subsection{Multi-Scale Temporal Processing}
-
-The cNVAE-PSG architecture processes signals at multiple temporal scales to capture both short-term cardiac dynamics and long-term sleep patterns. We define three primary scales, where for a given scale $l \in \{1, 2, 3\}$, the temporal resolution is $T_l = T / 2^{l-1}$. The first and finest scale, with a window of approximately 15 seconds, is designed to capture individual heartbeats and the immediate, fast coupling between PSG and ECG signals. The second scale, operating on a 30-second window, focuses on modeling respiratory-cardiac interactions, which are central to sleep-disordered breathing. The third and coarsest scale, with a 60-second or longer window, is intended to capture sleep stage transitions and longer-term autonomic patterns that define the macroarchitecture of sleep.
-
-\begin{align}
-\text{Scale}_l: \quad T_l = \frac{T}{2^{l-1}}, \quad l \in \{1, 2, 3\}
-\end{align}
-
-\subsection{Sleep-Aware Attention Mechanism}
-
-We incorporate attention mechanisms that specifically model sleep-cardiac coupling:
-
-\begin{align}
-\text{Attention}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \text{softmax}\left(\frac{\mathbf{Q}\mathbf{K}^T + \mathbf{A}_{\text{sleep}}}{\sqrt{d_k}}\right)\mathbf{V}
-\end{align}
-
-where $\mathbf{A}_{\text{sleep}}$ encodes sleep-specific attention biases.
-
-\subsection{Clinical Feature Integration}
-
-Clinical sleep variables are integrated through learned embeddings:
-
-\begin{align}
-\mathbf{e}_{\text{clinical}} = \text{MLP}_{\text{sleep}}([\text{age}, \text{BMI}, \text{AHI}, \text{sex}])
-\end{align}
-
-These embeddings condition both encoder and decoder through multiplicative interactions:
-
-\begin{align}
-\mathbf{h}_{\text{conditioned}} = \mathbf{h} \odot \sigma(\mathbf{W}_{\text{gate}} \mathbf{e}_{\text{clinical}} + \mathbf{b}_{\text{gate}})
-\end{align}
-
-\section{Training Methodology}
-
-\subsection{Progressive Training Strategy}
-
-Training proceeds in three phases:
-
-\begin{enumerate}
-\item \textbf{Phase 1 (Epochs 1-50)}: Basic reconstruction with $\beta = 0.1$
-\item \textbf{Phase 2 (Epochs 51-150)}: Add physiological constraints with $\lambda_{\text{phys}} = 0.5$
-\item \textbf{Phase 3 (Epochs 151-200)}: Full objective with all sleep-specific terms
-\end{enumerate}
-
-\subsection{Curriculum Learning for Sleep Stages}
-
-Training data is presented in a curriculum order to stabilize learning. The process begins with the most stable and common sleep stage, N2 sleep, to establish a robust baseline model of the PSG-ECG relationship. Subsequently, the model is exposed to more complex data from N1 and N3 sleep stages. Finally, the training curriculum introduces the most challenging cases, including REM sleep, which is characterized by high physiological variability, as well as periods containing distinct respiratory events and sleep stage transitions.
-
-\subsection{Optimization Details}
-
-The model is trained using the Adamax optimizer with a numerical stability term $\epsilon = 10^{-3}$. The learning rate is initialized to $1 \times 10^{-3}$ and managed with a cosine annealing schedule to facilitate convergence. We use a batch size of 32, where each sample is a 15-second window of multi-modal data. To accommodate GPU memory constraints while effectively increasing the batch size, we employ gradient accumulation over 4 steps. The training process is further accelerated through the use of mixed-precision arithmetic.
-
-\section{Clinical Validation Framework}
+\section{Proposed Clinical Validation Framework}
 
 A rigorous, multi-faceted validation framework is essential to ensure that the cNVAE-PSG model is not only technically sound but also clinically reliable and useful. Our proposed framework evaluates the model on three key dimensions: physiological realism, diagnostic accuracy, and clinical utility, as summarized in Table \ref{tab:validation_metrics}.
 
@@ -367,82 +274,78 @@ A rigorous, multi-faceted validation framework is essential to ensure that the c
     \end{tabular}
 \end{table}
 
-\subsection{Physiological Realism}
+\subsection{Evaluation of Physiological Realism}
 To be considered physiologically realistic, the generated ECG must faithfully reproduce key characteristics of a genuine signal. This will be assessed by evaluating the preservation of standard heart rate variability metrics, including RMSSD, pNN50, and SDNN. The model must also maintain correct QRS morphology, which will be verified using template matching against established clinical ECG patterns. Furthermore, the coherence between the generated signal and respiratory signals will be analyzed to ensure the presence of respiratory sinus arrhythmia. Finally, the model must generate signals that exhibit the expected cardiac signatures of different sleep stages, such as the characteristic heart rate patterns of REM sleep and the stability of NREM sleep.
 
-\subsubsection{Diagnostic Accuracy}
+\subsection{Evaluation of Diagnostic Accuracy}
 We will assess the model's ability to reproduce ECG signals with sufficient fidelity for arrhythmia detection. This will be quantified using sensitivity, specificity, positive predictive value, and the F1-score for detecting clinically significant events (e.g., atrial fibrillation, premature ventricular contractions, bradycardia episodes) on the generated ECG, using annotations from the real ECG as the gold standard. The model's utility in a primary sleep medicine context will be tested by comparing an ECG-derived respiration (EDR) signal from the generated ECG against the true respiratory signals from PSG. We will evaluate the correlation of respiratory disturbance indices. Preservation of autonomic nervous system signatures will be evaluated by comparing power spectral density estimates of HRV (LF, HF, LF/HF ratio) between the real and generated signals.
 
-\subsubsection{Clinical Utility Measures}
+\subsection{Evaluation of Clinical Utility}
 In a blinded study, board-certified sleep medicine physicians and cardiologists will be presented with pairs of real and generated 60-second ECG strips corresponding to specific sleep events (e.g., apnea, arousal, REM sleep). They will be asked to identify the synthetic signal. The model's success will be measured by the percentage of time it "fools" the experts, with statistical significance assessed using a one-sample test of proportions against chance (50\%). We will also evaluate whether diagnoses made using the generated ECG (e.g., presence of sleep-related AF) agree with those made from the real ECG, with agreement quantified using Cohen's Kappa. Finally, we will assess whether cardiovascular risk scores derived from the generated ECG (e.g., based on HRV and arrhythmia burden) correlate strongly with scores derived from the real ECG.
 
-\subsection{Validation Study Design}
+\subsection{Proposed Validation Study Design}
+A multi-center validation study across diverse patient populations is proposed to ensure the model's generalizability and robustness. The protocol specifies a target of 1,500 patients with complete PSG and ECG data for the training set. A separate validation set of 500 patients will be used for hyperparameter tuning and model selection. To provide an unbiased evaluation of the final model's performance, a test set of 300 patients will be strictly withheld from the training and validation processes. Finally, to assess the model's performance on data from different clinical environments, an external validation will be conducted using a dataset of 200 patients from sleep centers not included in the primary dataset.
 
-\begin{definition}[Proposed Clinical Validation Protocol]
-A multi-center validation across diverse patient populations is proposed:
-\begin{enumerate}
-\item \textbf{Training Set}: Target of 1,500 patients with complete PSG+ECG
-\item \textbf{Validation Set}: Target of 500 patients for hyperparameter tuning
-\item \textbf{Test Set}: Target of 300 patients withheld from training
-\item \textbf{External Validation}: Target of 200 patients from different sleep centers
-\end{enumerate}
-\end{definition}
+\subsection{Proposed Statistical Considerations}
 
-\section{Results and Discussion}
+\subsubsection{Power Analysis}
+A power analysis was conducted to determine the required sample size for detecting a clinically meaningful difference in the correlation of a key physiological parameter (e.g., HRV metric) between the real and generated ECGs. For detecting a difference in correlation coefficients ($\rho$) of 0.1 (e.g., $\rho_0=0.8$ vs. $\rho_1=0.9$) with a statistical power of 80\% ($\beta = 0.20$) and a significance level of 5\% ($\alpha = 0.05$), the required sample size is calculated as:
+\begin{align}
+n = \frac{(z_{\alpha/2} + z_\beta)^2}{[\frac{1}{2}\log(\frac{1+\rho_1}{1-\rho_1}) - \frac{1}{2}\log(\frac{1+\rho_0}{1-\rho_0})]^2} + 3
+\end{align}
+Based on this calculation, we require a minimum of 780 patient studies in our test set to ensure adequate statistical power.
 
-At this stage of our research, we have developed the complete mathematical and architectural framework for the cNVAE-PSG model. The implementation of the model is underway, and we are in the process of curating and pre-processing the clinical datasets as described in our proposed validation protocol.
+\subsubsection{Missing Data Handling}
+The current implementation of the cNVAE-PSG framework employs median imputation to handle missing values in clinical features, a pragmatic choice for initial model development. However, for the formal clinical validation, a more statistically rigorous approach is necessary to properly account for the uncertainty introduced by missing data. We therefore propose the use of Multiple Imputation by Chained Equations (MICE), a well-established method for handling missing data in clinical research. The proposed MICE procedure, detailed in Algorithm \ref{alg:mice}, involves creating multiple complete datasets by fitting a predictive model for each variable with missing values and drawing imputations from the posterior predictive distribution. The final analysis results would then be pooled across the imputed datasets using Rubin's rules, providing robust estimates that account for imputation uncertainty.
 
-We have not yet generated experimental results. The subsequent phase of our work will involve training the model and performing the rigorous clinical validation outlined in Section 6. We anticipate that the results will demonstrate the feasibility of high-fidelity ECG reconstruction from PSG data. The discussion will focus on the clinical implications of our findings, potential limitations, and future directions for research, including the integration of this technology into clinical workflows.
+\begin{algorithm}[H]
+\caption{Proposed Multiple Imputation by Chained Equations (MICE) Procedure}
+\label{alg:mice}
+\begin{algorithmic}[1]
+\STATE \textbf{Input:} Incomplete dataset $\mathbf{X}$ with missing values
+\STATE \textbf{Parameters:} Number of imputations $M=20$, burn-in iterations $N_{burn}=100$
+\FOR{$m = 1$ to $M$}
+    \STATE Initialize missing values in $\mathbf{X}$ to create $\mathbf{X}^{(m,0)}$
+    \FOR{$t = 1$ to $N_{burn} + N_{sample}$}
+        \FOR{each variable $X_j$ with missing values}
+            \STATE Let $\mathbf{X}_{j,obs}^{(m,t-1)}$ be the observed values and $\mathbf{X}_{-j}^{(m,t-1)}$ be other variables
+            \STATE Fit a model $p(X_j | \mathbf{X}_{-j}; \boldsymbol{\theta}_j)$ using the current complete data
+            \STATE Draw new parameters $\boldsymbol{\theta}_j^*$ from their posterior distribution
+            \STATE Impute missing values $\mathbf{X}_{j,mis}^{(m,t)}$ by drawing from $p(X_{j,mis} | \mathbf{X}_{-j,mis}^{(m,t-1)}, \boldsymbol{\theta}_j^*)$
+        \ENDFOR
+    \ENDFOR
+    \STATE Store the final imputed dataset $\mathbf{X}^{(m)} = \mathbf{X}^{(m, N_{burn}+N_{sample})}$
+\ENDFOR
+\STATE Analyze each of the $M$ completed datasets
+\STATE Pool the results using Rubin's rules to obtain final estimates and confidence intervals.
+\end{algorithmic}
+\end{algorithm}
+
+\section{Current Status and Future Work}
+
+This paper presents the complete mathematical and architectural framework for the cNVAE-PSG model. The current phase of the project involves the implementation of this framework and the curation of clinical datasets required for training and validation. No experimental results have been generated to date.
+
+The immediate future work will focus on two primary objectives. First, the model will be trained on the prepared datasets according to the methodology outlined in Section 2. The initial training will optimize the core ELBO objective, with subsequent experiments planned to incorporate the advanced physiological loss terms described in Section 5. Second, upon successful training, we will execute the comprehensive clinical validation protocol detailed in Section 6. The outcomes of this validation will form the basis of subsequent publications, which will analyze the model's performance, discuss clinical implications, and explore pathways for integrating this technology into sleep medicine workflows.
 
 \section{Clinical Applications}
 
-\subsection{Primary Applications}
+The cNVAE-PSG framework has several potential applications in clinical practice, research, and education, aimed at bridging the gap between sleep medicine and cardiac electrophysiology. The primary clinical application is the enhancement of home sleep apnea testing (HSAT). HSAT devices, while cost-effective and widely used, typically lack comprehensive ECG monitoring. By generating a clinically relevant ECG from the standard PSG signals collected by these portable devices, our framework can enable a more thorough sleep-cardiac assessment in a home setting, identifying potential cardiac risks that would otherwise be missed.
 
-\subsubsection{Home Sleep Testing Enhancement}
-\textbf{Problem}: Home sleep tests often lack ECG monitoring due to complexity and cost.
+Another significant application is in the retrospective analysis of historical data. Large databases of sleep studies exist that lack concurrent, high-fidelity ECG recordings. The cNVAE-PSG model can be used to generate ECG signals for these historical datasets, unlocking their potential for research into sleep-cardiac interactions and enabling retrospective clinical review of cardiac status during sleep. This capability could also extend to remote monitoring scenarios, where generating cardiac data from simpler, non-ECG sleep monitoring systems could improve the accessibility and reduce the cost of long-term management for patients with chronic sleep disorders.
 
-\textbf{Solution}: Generate clinically-relevant ECG from portable PSG devices.
+Beyond these primary clinical uses, the framework has valuable secondary applications. In medical education and technologist training, the model can generate a vast number of realistic, synchronized PSG-ECG data pairs, providing a rich resource for learning to identify complex sleep-cardiac events. For research, it can facilitate large-scale population studies on the electrophysiological consequences of sleep disorders by augmenting existing datasets. Finally, the ability to generate high-fidelity synthetic data provides a powerful tool for the development and validation of new algorithms for sleep and cardiac signal analysis, accelerating innovation in the field.
 
-\textbf{Clinical Impact}: Enable comprehensive sleep-cardiac assessment in home settings.
-
-\subsubsection{Historical Data Analysis}
-\textbf{Problem}: Many historical sleep studies lack concurrent ECG recordings.
-
-\textbf{Solution}: Retrospectively generate ECG for research and clinical review.
-
-\textbf{Clinical Impact}: Expand utility of existing sleep study databases.
-
-\subsubsection{Remote Monitoring}
-\textbf{Problem}: Long-term sleep monitoring requires expensive multi-modal systems.
-
-\textbf{Solution}: Enable cardiac assessment in home sleep studies where full PSG+ECG is not feasible.
-
-\textbf{Clinical Impact}: Improve accessibility and reduce costs for chronic sleep disorder management.
-
-\subsection{Secondary Applications}
-
-\subsubsection{Education and Training}
-Generate realistic PSG-ECG pairs for medical education and sleep technologist training.
-
-\subsubsection{Research Applications}
-Enable large-scale population studies of sleep-cardiac interactions.
-
-\subsubsection{Algorithm Development}
-Provide realistic synthetic data for developing sleep-cardiac analysis algorithms.
-
-\section{Advanced Methodological Considerations}
+\section{Future Research: Advanced Methodological Extensions}
 
 \subsection{Uncertainty Quantification in Sleep Medicine}
 
-Clinical decision-making requires understanding model uncertainty. We implement aleatoric and epistemic uncertainty estimation:
-
+To enhance clinical trust and utility, future versions of the model could incorporate robust uncertainty quantification. This would involve estimating both aleatoric uncertainty (inherent data noise) and epistemic uncertainty (model uncertainty). The overall predictive uncertainty could be formally expressed as:
 \begin{align}
 p(\mathbf{Y}_{\text{ECG}} | \mathbf{X}_{\text{PSG}}, \mathbf{c}_{\text{sleep}}, \mathcal{D}) = \int p(\mathbf{Y}_{\text{ECG}} | \mathbf{X}_{\text{PSG}}, \mathbf{c}_{\text{sleep}}, \boldsymbol{\theta}) p(\boldsymbol{\theta} | \mathcal{D}) d\boldsymbol{\theta}
 \end{align}
 
 \subsubsection{Bayesian Neural Networks for Clinical Reliability}
-We employ variational inference to approximate posterior distributions over network parameters:
-
+One proposed method to achieve this is to employ variational inference to approximate the posterior distributions over network parameters, effectively creating a Bayesian Neural Network:
 \begin{align}
 q_\phi(\boldsymbol{\theta}) = \prod_i \mathcal{N}(\theta_i; \mu_i, \sigma_i^2)
 \end{align}
@@ -462,45 +365,21 @@ P(Y \in C(X)) \geq 1 - \alpha
 
 This provides clinically interpretable confidence bounds on ECG predictions.
 
-\subsection{Robustness and Generalization}
+\subsection{Proposed Robustness and Generalization Enhancements}
 
 \subsubsection{Domain Adaptation for Clinical Sites}
-Different sleep centers use varying equipment and protocols. We address this through adversarial domain adaptation:
-
+Different sleep centers use varying equipment and protocols, which can introduce domain shift that degrades model performance. Future work could address this through adversarial domain adaptation, which would involve training a domain discriminator to encourage the model to learn domain-invariant representations. The objective function would be modified to:
 \begin{align}
 \min_{\theta} \max_{\phi} \mathcal{L}_{\text{task}}(\theta) - \lambda \mathcal{L}_{\text{domain}}(\theta, \phi)
 \end{align}
-
-where $\mathcal{L}_{\text{domain}}$ encourages domain-invariant representations.
+where $\mathcal{L}_{\text{domain}}$ is the loss of the domain classifier.
 
 \subsubsection{Robustness to PSG Artifacts}
-Sleep studies frequently contain artifacts. We model this through noise-robust training:
-
+Sleep studies frequently contain artifacts from sensor movement, electrical interference, or patient activity. To improve the model's resilience, future training could incorporate a more advanced noise-robust training scheme by corrupting input signals with simulated, realistic PSG artifacts:
 \begin{align}
 \mathbf{X}_{\text{corrupted}} = \mathbf{X}_{\text{PSG}} + \boldsymbol{\epsilon}_{\text{artifact}}
 \end{align}
-
-where $\boldsymbol{\epsilon}_{\text{artifact}}$ simulates realistic PSG artifacts.
-
-\subsection{Computational Complexity Analysis}
-
-\subsubsection{Time Complexity}
-For input sequences of length $T$ with $L$ latent scales:
-
-\begin{align}
-\mathcal{O}_{\text{training}} = \mathcal{O}(T \log T \cdot L \cdot D^2)
-\end{align}
-
-where $D$ represents the maximum latent dimension.
-
-\subsubsection{Space Complexity}
-Memory requirements scale with:
-
-\begin{align}
-\mathcal{O}_{\text{memory}} = \mathcal{O}(B \cdot T \cdot C + L \cdot D^2)
-\end{align}
-
-where $B$ is batch size and $C$ is channel count.
+This would force the model to learn to reconstruct the clean signal from noisy inputs, improving its performance in real-world clinical settings.
 
 \begin{figure}[H]
     \centering
@@ -544,48 +423,6 @@ where $B$ is batch size and $C$ is channel count.
     \caption{High-level architecture of the cNVAE-PSG model, illustrating the flow from multi-channel PSG and clinical variables to the reconstructed ECG signal through a hierarchical latent space. The encoder $q_\phi$ maps inputs to the latent variables $\mathbf{z}_l$, and the decoder $p_\theta$ reconstructs the ECG, both conditioned on clinical sleep variables $\mathbf{c}_{\text{sleep}}$.}
     \label{fig:cnvae_architecture}
 \end{figure}
-
-\subsubsection{Inference Efficiency}
-For the model to be clinically viable for real-time applications, it must meet stringent performance criteria. The forward pass for a 15-second window must be completed in under 100 milliseconds. The model's memory footprint should not exceed 2 GB of GPU memory, and it must be compatible with CPU-based deployment for wider accessibility in clinical environments.
-
-\section{Validation and Statistical Framework}
-
-\subsection{Experimental Design}
-
-\subsubsection{Power Analysis}
-For detecting clinically meaningful differences in correlation $\rho$:
-
-\begin{align}
-n = \frac{(z_{\alpha/2} + z_\beta)^2}{[\frac{1}{2}\log(\frac{1+\rho_1}{1-\rho_1}) - \frac{1}{2}\log(\frac{1+\rho_0}{1-\rho_0})]^2} + 3
-\end{align}
-
-With $\alpha = 0.05$, $\beta = 0.20$, and $\rho_1 - \rho_0 = 0.1$, we require $n \geq 780$ patient studies.
-
-\subsubsection{Missing Data Handling}
-Sleep studies often have incomplete data. We implement multiple imputation using the chained equations (MICE) method, as detailed in Algorithm \ref{alg:mice}.
-
-\begin{algorithm}[H]
-\caption{Multiple Imputation by Chained Equations (MICE) for Sleep Study Data}
-\label{alg:mice}
-\begin{algorithmic}[1]
-\STATE \textbf{Input:} Incomplete dataset $\mathbf{X}$ with missing values
-\STATE \textbf{Parameters:} Number of imputations $M=20$, burn-in iterations $N_{burn}=100$
-\FOR{$m = 1$ to $M$}
-    \STATE Initialize missing values in $\mathbf{X}$ to create $\mathbf{X}^{(m,0)}$
-    \FOR{$t = 1$ to $N_{burn} + N_{sample}$}
-        \FOR{each variable $X_j$ with missing values}
-            \STATE Let $\mathbf{X}_{j,obs}^{(m,t-1)}$ be the observed values and $\mathbf{X}_{-j}^{(m,t-1)}$ be other variables
-            \STATE Fit a model $p(X_j | \mathbf{X}_{-j}; \boldsymbol{\theta}_j)$ using the current complete data
-            \STATE Draw new parameters $\boldsymbol{\theta}_j^*$ from their posterior distribution
-            \STATE Impute missing values $\mathbf{X}_{j,mis}^{(m,t)}$ by drawing from $p(X_{j,mis} | \mathbf{X}_{-j,mis}^{(m,t-1)}, \boldsymbol{\theta}_j^*)$
-        \ENDFOR
-    \ENDFOR
-    \STATE Store the final imputed dataset $\mathbf{X}^{(m)} = \mathbf{X}^{(m, N_{burn}+N_{sample})}$
-\ENDFOR
-\STATE Analyze each of the $M$ completed datasets
-\STATE Pool the results using Rubin's rules to obtain final estimates and confidence intervals.
-\end{algorithmic}
-\end{algorithm}
 
 \printbibliography[heading=bibintoc, title=\ebibname]
 
