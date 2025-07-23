@@ -1,0 +1,42 @@
+# --- Data Configuration ---
+data_dir: '/Users/mithunm/Library/CloudStorage/OneDrive-Personal/Career/T-Cairem/Python/Cursor/test/data/physionet.org/files/challenge-2017/1.0.0/training'
+cache_dir: '/Users/mithunm/Library/CloudStorage/OneDrive-Personal/Career/T-Cairem/Python/Cursor/test/gcs/cache'
+clinical_csv_path: '/Users/mithunm/Library/CloudStorage/OneDrive-Personal/Career/T-Cairem/Python/Cursor/test/TCAIREM_SleepLabData.csv'
+target_fs: 256
+crop_length_sec: 30
+num_crops_per_item: 5 # for data augmentation
+
+# --- Model Configuration ---
+model:
+  name: 'cNVAE'
+  encoder_channels: [64, 128, 256]
+  decoder_channels: [256, 128, 64]
+  num_residual_blocks: [2, 2, 2]
+  subsample: [4, 4, 4]
+  upsample: [4, 4, 4]
+  num_z_channels: [16, 32, 64]
+  num_classes: 4 # AHI Severity
+  embedding_dim: 16
+
+# --- Training Configuration ---
+training:
+  epochs: 100
+  batch_size: 32
+  learning_rate: 0.001
+  learning_rate_min: 0.00001
+  weight_decay: 0.000001
+  warmup_epochs: 5
+  grad_clip_norm: 1.0
+  use_amp: True
+  # KL Annealing
+  kl_anneal_cyclical: True
+  kl_anneal_period_iters: 10000
+  kl_beta_max: 1.0
+
+# --- Evaluation Configuration ---
+evaluation:
+  batch_size: 64
+
+# --- Environment ---
+# device: 'cuda'
+# num_workers: 4
